@@ -13,6 +13,8 @@ import java.util.Scanner;
 public class RouteCarbonCalculator {
 
     private String routeID = "";
+    private String from_id = "";
+    private String to_id = "";
     private double distanceByFoot = 0;
     private double distanceByBus = 0;
     private double co2FromBus = 0;
@@ -23,15 +25,17 @@ public class RouteCarbonCalculator {
     private double distanceByMetro = 0;
     private double co2FromMetro = 0;
     private double distanceByFerry = 0;
+    private double co2FromFerry = 0;
     private int hopCount = 0;
     private double co2Total = 0;
     private double co2FromCar = 0;
 
-    private static final int busCO2 = 80;
-    private static final int tramCO2 = 30;
-    private static final int trainCO2 = 22;
-    private static final int metroCO2 = 13;
-    private static final int carCO2 = 179;
+    private static final int busCO2 = 73;
+    private static final int tramCO2 = 0;
+    private static final int trainCO2 = 0;
+    private static final int metroCO2 = 0;
+    private static final int carCO2 = 171;
+    private static final int ferryCO2 = 389;
 
     private void setRouteID(String routeID) {
         this.routeID = routeID;
@@ -120,6 +124,8 @@ public class RouteCarbonCalculator {
         calculateCO2ForRoute();
 
         pw.print(routeID + ";");
+        pw.print(this.from_id + ";");
+        pw.print(this.to_id + ";");
         pw.print(this.distanceByFoot + ";");
         pw.print(this.distanceByBus + ";");
         pw.print(this.co2FromBus + ";");
@@ -130,9 +136,10 @@ public class RouteCarbonCalculator {
         pw.print(this.distanceByMetro + ";");
         pw.print(this.co2FromMetro + ";");
         pw.print(this.distanceByFerry + ";");
+        pw.print(this.co2FromFerry + ";");
         pw.print(this.hopCount + ";");
         pw.print(this.co2Total + ";");
-        pw.print(this.co2FromCar + ";");
+        pw.print(this.co2FromCar);
         pw.println();
     }
 
@@ -141,7 +148,8 @@ public class RouteCarbonCalculator {
         this.co2FromMetro = (this.distanceByMetro / 1000) * metroCO2;
         this.co2FromTrain = (this.distanceByTrain / 1000) * trainCO2;
         this.co2FromTram = (this.distanceByTram / 1000) * tramCO2;
-        this.co2Total = this.co2FromBus + this.co2FromMetro + this.co2FromTrain + this.co2FromTram;
+        this.co2FromFerry = (this.distanceByFerry / 1000) * ferryCO2;
+        this.co2Total = this.co2FromBus + this.co2FromMetro + this.co2FromTrain + this.co2FromTram + this.co2FromFerry;
         this.co2FromCar = (this.distanceByFoot + this.distanceByBus + this.distanceByTram + this.distanceByTrain + this.distanceByMetro
                 + this.distanceByFerry) / 1000 * carCO2;
 
@@ -159,6 +167,8 @@ public class RouteCarbonCalculator {
         s.close();
 
         this.routeID = splitRow.get(2) + "_" + splitRow.get(3);
+        this.from_id = splitRow.get(0);
+        this.to_id = splitRow.get(1);
 
         //Vanhaa mallia: setDistance(0, Double.valueOf(splitRow.get(27)));
         //System.out.println("walk distance: " + splitRow.get(15));

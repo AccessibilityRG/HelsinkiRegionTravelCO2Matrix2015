@@ -4,16 +4,16 @@ import funclib as fl
 import car_CO2_calculator as cco2
 
 """This script parses Helsinki Region Travel CO2 Matrix 2015 using a
-   Java application called RouteCarbonCalculator (programmed by Jaani Lahtinen)
+   Java application called RouteCarbonCalculator (programmed by Jaani Lahtinen, modified by Henrikki Tenkanen)
 
    Process includes following steps:
 
-   1. Calculate the CO2 emissions with RouteCarbonCalculator for PT
+   1. Calculate the CO2 emissions with RouteCarbonCalculator2015.jar for PT (update CO2 emissions to Java application beforehand if needed)
    2. Calculate CO2 emissions for Private Car
-   3. Combine PT and Car results
-   4. Move Carbon files to a new dedicated location on a disk
+   3. Move Carbon files to a new dedicated location on a disk
+   4. Combine PT and Car results
    5. Push Carbon files to PostGIS
-   6. Pull Carbon emission matrix from PostGIS and create a text-file based CO2 Matrix
+   7. Pull Carbon emission matrix from PostGIS and create a text-file based CO2 Matrix
 
    """
 # -------------
@@ -36,7 +36,7 @@ car_12_co2_dir = r"E:\Matriisiajot2015\RESULTS\MassaAjot2015_Car_Midday_CARBON"
 co2_matrix_2015 = r"E:\Matriisiajot2015\RESULTS\HelsinkiRegion_TravelCO2Matrix2015"
 
 # Path to RouteCarbonCalculator
-co2_calculator = r"C:\HY-Data\HENTENKA\KOODIT\HelsinkiRegionTravelCO2\codes\CarbonCalculator\RouteCarbonCalculator.jar"
+co2_calculator = r"C:\HY-Data\HENTENKA\KOODIT\HelsinkiRegionTravelCO2\codes\CarbonCalculator\RouteCarbonCalculator2015.jar"
 
 # ----------------------------
 # Read input file paths
@@ -67,13 +67,39 @@ for fileidx, ptfp08 in enumerate(pt_08_fps):
         carfp12 = fl.findMatchingFile(source_fp=ptfp08, targetPaths=car_12_fps, mode='car')
 
         # Calculate CO2 emissions for PT using RouteCarbonCalculator (Java application)
-        fl.runRouteCarbonCalculator(src_file=ptfp08, path_to_carbon_calc=co2_calculator)
-
-        # Move CO2 results to appropriate CO2 folders
-        fl.moveCO2files(src_file=ptfp08, output_dir=pt_08_co2_dir)
+        pt_08_co2file = r"E:\Matriisiajot2015\RESULTS\MassaAjot2015_PT_klo08_CARBON\RESULTS\100_Massa-ajo_2015_Joukkoliikenne_Rushhour_CO2.txt" #       pt_08_co2file = fl.runRouteCarbonCalculator(src_file=ptfp08, path_to_carbon_calc=co2_calculator, output_dir=pt_08_co2_dir)
 
         # Calculate the CO2 results for Car
-        cco2.calculateCarCO2emissions(src_file=carfp08, output_dir=car_08_co2_dir)
+        car_08_co2file = r"E:\Matriisiajot2015\RESULTS\MassaAjot2015_Car_Rushhour_CARBON\CarTT_Ruuhka_100_Car_Matrix2015_CO2_emissions.txt" #car_08_co2file = cco2.calculateCarCO2emissions(src_file=carfp08, output_dir=car_08_co2_dir)
+
+        # Combine datasets into a single DataFrame
+        # -----------------------------------------
+
+        # LIST ORDER MUST MATCH IN FOLLOWING 3 LISTS:
+        # Files that will be processed
+        fp_list = [pt_08_co2file, car_08_co2file]
+        # Suffices for the columns in processed files that will be inserted
+        name_list = ['_PT_r', '_Car_r']
+        # Separators for each file
+        sep_list = [';', ';']
+
+        # Combine datsets
+        co2_emissions = fl.combineDatasets(fp_list=fp_list, sep_list=sep_list, name_list=name_list)
+
+        print(co2_emissions.head())
+        print(co2_emissions.columns)
+
+        # ---------------------------------------
+        # Parse necessary columns for the Matrix
+        # ---------------------------------------
+        selected_cols = ['from_id', 'to_id', 'Total CO2_PT_r', 'co2FromCar_Car_r']
+
+        # ---------------------------------
+        # Create PostGIS table if needed
+        # ---------------------------------
+
+
+
 
 
 

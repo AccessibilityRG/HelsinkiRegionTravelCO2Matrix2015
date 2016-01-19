@@ -49,10 +49,11 @@ public class RouteCarbonCalculatorApp {
 
         String inputWithoutExtension = input_file.substring(0, input_file.length() - 4);
 
-        String output_file = inputWithoutExtension + ".RESULT.csv";
+        String output_file = args[1];
         System.out.println("Output-tiedosto on " + output_file);
 
-        String error_file = inputWithoutExtension + ".ERRORS.csv";
+        //String error_file = inputWithoutExtension + ".ERRORS.csv";
+        String error_file = args[2];
         System.out.println("Error-tiedosto on " + error_file);
 
         PrintWriter outFile = new PrintWriter(new FileWriter(output_file));
@@ -70,6 +71,8 @@ public class RouteCarbonCalculatorApp {
         System.out.println("Aloitetaan input-tiedoston luku.");
 
         outFile.print("RouteID;");
+        outFile.print("from_id;");
+        outFile.print("to_id;");
         outFile.print("Walk;");
         outFile.print("Bus;");
         outFile.print("Bus CO2;");
@@ -80,9 +83,10 @@ public class RouteCarbonCalculatorApp {
         outFile.print("Metro;");
         outFile.print("Metro CO2;");
         outFile.print("Ferry;");
+        outFile.print("Ferry CO2;");
         outFile.print("Lines used;");
         outFile.print("Total CO2;");
-        outFile.print("CO2 comparison (car);");
+        outFile.print("CO2 comparison (car)");
         outFile.println();
 
         try {
@@ -157,11 +161,11 @@ public class RouteCarbonCalculatorApp {
                         try {
                             //vanha: lineString    = splitRow.get(i+1).toString();
                             lineString = splitRow.get(i + 4).toString();
-                            System.out.println("lineString: " + lineString);
+                            //System.out.println("lineString: " + lineString);
 
                             //vanha: transportType = Integer.valueOf(splitRow.get(i+2));
                             transportType = Integer.valueOf(splitRow.get(i + 5));
-                            System.out.println("transportType: " + transportType);
+                            //System.out.println("transportType: " + transportType);
                         } catch (NumberFormatException nfe) {
                             continue;
                         }

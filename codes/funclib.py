@@ -1,7 +1,9 @@
 __author__ = 'hentenka'
 import os, sys
 import subprocess
-import shutil
+import pandas as pd
+from base import POSTGIS_DB_NAME, POSTGIS_PORT, POSTGIS_PWD, POSTGIS_USERNAME, IP_ADDRESS
+import psycopg2
 
 def filePathsToList(source_dir, criteria, fileformat):
     flist = []
@@ -31,24 +33,7 @@ def findMatchingFile(source_fp, targetPaths, mode='pt'):
     print("Error: Could not find corresponding target_file for %s in %s" % (Source_ID, search_folder))
     sys.exit()
 
-def runRouteCarbonCalculator(src_file, path_to_carbon_calc):
-    # Parse command
-    command = "java -jar %s %s" % (path_to_carbon_calc, src_file)
-    print(command)
-    subprocess.call(command)
-
-def moveCO2files(src_file, output_dir):
-    # Parse file paths
-    src_dir = os.path.dirname(src_file)
-
-    # Parse the names of the source files
-    co2_result_name = "%s.RESULT.csv" % os.path.basename(src_file).split('.')[0]
-    co2_error_name = "%s.ERRORS.csv" % os.path.basename(src_file).split('.')[0]
-
-    # Parse the full paths
-    co2_result = os.path.join(src_dir, co2_result_name)
-    co2_error = os.path.join(src_dir, co2_error_name)
-
+def runRouteCarbonCalculator(src_file, path_to_carbon_calc, output_dir):
     # Create separate folders for RESULTS and ERRORS
     co2_result_target_dir = os.path.join(output_dir, "RESULTS")
     co2_error_target_dir = os.path.join(output_dir, "ERRORS")
@@ -58,16 +43,106 @@ def moveCO2files(src_file, output_dir):
     if not os.path.exists(co2_error_target_dir):
         os.makedirs(co2_error_target_dir)
 
+    # Create output paths for result and error file
+    result_file = "%s_CO2.txt" % os.path.basename(src_file).split('.')[0]
+    error_file = "%s_CO2_ERRORS.txt" % os.path.basename(src_file).split('.')[0]
+
     # Target paths
-    co2_result_target = os.path.join(co2_result_target_dir, co2_result_name)
-    co2_error_target = os.path.join(co2_error_target_dir, co2_error_name)
+    co2_result = os.path.join(co2_result_target_dir, result_file)
+    co2_error = os.path.join(co2_error_target_dir, error_file)
 
-    # Move files
-    shutil.move(src=co2_result, dst=co2_result_target)
-    shutil.move(src=co2_error, dst=co2_error_target)
+    # Parse command
+    command = "java -jar %s %s %s %s" % (path_to_carbon_calc, src_file, co2_result, co2_error)
+    print(command)
+    subprocess.call(command)
 
-    # Print info
-    print("Moved: %s ==> %s" % (co2_result, co2_result_target))
-    print("Moved: %s ==> %s" % (co2_error, co2_error_target))
+    # Return result path
+    return co2_result
+
+def combineDatasets(fp_list, sep_list, name_list):
+    # Create an initial DataFrame of the first file
+    data = pd.read_csv(fp_list[0], sep_list[0], index_col=False)
+
+    # Rename columns based on value on name_list
+    data.columns = [colname+name_list[0] for colname in data.columns]
+
+    # Rename 'from_id' and 'to_id' back to original
+    data = data.rename(columns={'from_id'+name_list[0]: 'from_id', 'to_id'+name_list[0]: 'to_id'})
+
+    # Remove the initial file from fp_list and sep_list
+    fp_list, sep_list, name_list = fp_list[1:], sep_list[1:], name_list[1:]
+
+    # Merge files one by one
+    for index, fp in enumerate(fp_list):
+        # Read other file
+        other = pd.read_csv(fp, sep=sep_list[index], index_col=False)
+        # Rename columns based on value on name_list
+        other.columns = [colname+name_list[index] for colname in other.columns]
+        # Rename 'RouteID' back to original
+        other = other.rename(columns={'from_id'+name_list[index]: 'from_id', 'to_id'+name_list[index]: 'to_id'})
+        # Ensure that 'from_id' and 'to_id' are integer type
+        other[['from_id', 'to_id']] = other[['from_id', 'to_id']].astype(int)
+        # Make a table join
+        data = data.merge(other, on=['from_id', 'to_id'])
+
+    # Return DataFrame
+    return data
+
+def connect_to_DB(host, db_name, username, pwd, port):
+    conn_string = "host='%s' dbname='%s' user='%s' password='%s' port='%s'" % (host, db_name, username, pwd, port)
+    #print(conn_string)
+    conn = psycopg2.connect(conn_string)
+    cursor = conn.cursor()
+    return conn, cursor
+
+def createTTMtable14(conn, cursor, table_name):
+    # Create a table [table_name]
+    cursor.execute("CREATE TABLE %s (from_id integer, to_id integer, walk_t integer, walk_d integer, pt_m_tt integer, pt_m_t integer, pt_m_d integer, car_m_t integer, car_m_d integer);" % table_name)
+    conn.commit()
+
+def createTTMtable15(conn, cursor, table_name):
+    # Create a table [table_name]
+    cursor.execute("CREATE TABLE %s (from_id integer, to_id integer, walk_t integer, walk_d integer, pt_r_tt integer, pt_r_t integer, pt_r_d integer,  pt_m_tt integer, pt_m_t integer, pt_m_d integer, car_r_t integer, car_r_d integer, car_m_t integer, car_m_d integer);" % table_name)
+    conn.commit()
+
+def createPrimaryKey(conn, cursor, table, col_name):
+    # Create a primary key to database
+    sql = "ALTER TABLE %s ADD COLUMN %s SERIAL" % (table, col_name)
+    print(sql)
+    cursor.execute(sql)
+    conn.commit()
+
+def vacuumTable(conn, cursor, table):
+    # This function only vacuums space for re-use within same table
+    # (if required use FULL parameter to entirely free space to the disk
+    # (notice: requires a lot of space to do this because a copy is made during the vacuum process))
+    old_isolation_level = conn.isolation_level
+    conn.set_isolation_level(0)
+    sql = "VACUUM (VERBOSE, ANALYZE) %s;" % table
+    cursor.execute(sql)
+    conn.commit()
+    conn.set_isolation_level(old_isolation_level)
+
+def createIndex(conn, cursor, table, column, index_col):
+    sql = "CREATE INDEX %s ON %s (%s);" % (index_col, table, column)
+    print(sql)
+
+    cursor.execute(sql)
+    conn.commit()
+
+def setPrimaryKeyCol(conn, cursor, table, key_column):
+    sql = "ALTER TABLE %s ADD PRIMARY KEY (%s);" % (table, key_column)
+    print(sql)
+    cursor.execute(sql)
+    conn.commit()
+
+def renameColumns(conn, cursor, table, oldName_newName_dict):
+    for old_name, new_name in oldName_newName_dict.items():
+        print(old_name, "==>", new_name)
+        sql = "ALTER TABLE %s RENAME COLUMN %s TO %s;" % (table, old_name, new_name)
+        cursor.execute(sql)
+
+    conn.commit()
+
 
 
