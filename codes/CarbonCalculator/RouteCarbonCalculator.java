@@ -29,6 +29,7 @@ public class RouteCarbonCalculator {
     private int hopCount = 0;
     private double co2Total = 0;
     private double co2FromCar = 0;
+    private double distanceByPT = 0;
 
     private static final int busCO2 = 73;
     private static final int tramCO2 = 0;
@@ -139,7 +140,8 @@ public class RouteCarbonCalculator {
         pw.print(this.co2FromFerry + ";");
         pw.print(this.hopCount + ";");
         pw.print(this.co2Total + ";");
-        pw.print(this.co2FromCar);
+        pw.print(this.co2FromCar + ";");
+        pw.print(this.distanceByPT);
         pw.println();
     }
 
@@ -150,6 +152,7 @@ public class RouteCarbonCalculator {
         this.co2FromTram = (this.distanceByTram / 1000) * tramCO2;
         this.co2FromFerry = (this.distanceByFerry / 1000) * ferryCO2;
         this.co2Total = this.co2FromBus + this.co2FromMetro + this.co2FromTrain + this.co2FromTram + this.co2FromFerry;
+        this.distanceByPT = (this.distanceByBus + this.distanceByTram + this.distanceByTrain + this.distanceByMetro + this.distanceByFerry);
         this.co2FromCar = (this.distanceByFoot + this.distanceByBus + this.distanceByTram + this.distanceByTrain + this.distanceByMetro
                 + this.distanceByFerry) / 1000 * carCO2;
 

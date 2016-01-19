@@ -86,7 +86,8 @@ public class RouteCarbonCalculatorApp {
         outFile.print("Ferry CO2;");
         outFile.print("Lines used;");
         outFile.print("Total CO2;");
-        outFile.print("CO2 comparison (car)");
+        outFile.print("CO2 comparison (car);");
+        outFile.print("distanceByPT");
         outFile.println();
 
         try {
