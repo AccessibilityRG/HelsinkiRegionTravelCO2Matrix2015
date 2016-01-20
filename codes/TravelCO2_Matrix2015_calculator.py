@@ -3,6 +3,7 @@ import funclib as fl
 import car_CO2_calculator as cco2
 from base import DATA_TABLE
 import threading
+import time
 
 """This script parses Helsinki Region Travel CO2 Matrix 2015 and pushes it to PostGIS Table.
    A specific Java application called RouteCarbonCalculator (programmed by Jaani Lahtinen, modified by Henrikki Tenkanen),
@@ -155,13 +156,14 @@ co2_calculator = r"C:\HY-Data\HENTENKA\KOODIT\HelsinkiRegionTravelCO2\codes\Carb
 # NOTICE!
 # You should take care that there is sufficiently memory (RAM) in your computer.
 # Creating too many threads may exceed your memory limit and produce a memory error.
+# 3 threads is the maximum that can be used with computer that has 16GB of RAM.
 
 # THREAD1
 # =======
 
 # Set up start-end indices
 start_idx = 121
-end_idx = 160
+end_idx = 180
 
 thread1 = co2MatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, pt_r_dir=pt_08_dir, pt_m_dir=pt_12_dir, car_r_dir=car_08_dir, car_m_dir=car_12_dir,
                            pt_r_co2_dir=pt_08_co2_dir, pt_m_co2_dir=pt_12_co2_dir, car_r_co2_dir=car_08_co2_dir, car_m_co2_dir=car_12_co2_dir, co2_calculator_path=co2_calculator)
@@ -170,8 +172,8 @@ thread1 = co2MatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=
 # =======
 
 # Set up start-end indices
-start_idx = 160
-end_idx = 200
+start_idx = 180
+end_idx = 220
 
 thread2 = co2MatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, pt_r_dir=pt_08_dir, pt_m_dir=pt_12_dir, car_r_dir=car_08_dir, car_m_dir=car_12_dir,
                            pt_r_co2_dir=pt_08_co2_dir, pt_m_co2_dir=pt_12_co2_dir, car_r_co2_dir=car_08_co2_dir, car_m_co2_dir=car_12_co2_dir, co2_calculator_path=co2_calculator)
@@ -180,29 +182,31 @@ thread2 = co2MatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=
 # =======
 
 # Set up start-end indices
-start_idx = 200
-end_idx = 240
+start_idx = 220
+end_idx = 293
 
 thread3 = co2MatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, pt_r_dir=pt_08_dir, pt_m_dir=pt_12_dir, car_r_dir=car_08_dir, car_m_dir=car_12_dir,
                            pt_r_co2_dir=pt_08_co2_dir, pt_m_co2_dir=pt_12_co2_dir, car_r_co2_dir=car_08_co2_dir, car_m_co2_dir=car_12_co2_dir, co2_calculator_path=co2_calculator)
 
-# THREAD4
-# =======
-
-# Set up start-end indices
-start_idx = 240
-end_idx = 293
-
-thread4 = co2MatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, pt_r_dir=pt_08_dir, pt_m_dir=pt_12_dir, car_r_dir=car_08_dir, car_m_dir=car_12_dir,
-                           pt_r_co2_dir=pt_08_co2_dir, pt_m_co2_dir=pt_12_co2_dir, car_r_co2_dir=car_08_co2_dir, car_m_co2_dir=car_12_co2_dir, co2_calculator_path=co2_calculator)
-
+# # THREAD4
+# # =======
+#
+# # Set up start-end indices
+# start_idx = 240
+# end_idx = 293
+#
+# thread4 = co2MatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, pt_r_dir=pt_08_dir, pt_m_dir=pt_12_dir, car_r_dir=car_08_dir, car_m_dir=car_12_dir,
+#                            pt_r_co2_dir=pt_08_co2_dir, pt_m_co2_dir=pt_12_co2_dir, car_r_co2_dir=car_08_co2_dir, car_m_co2_dir=car_12_co2_dir, co2_calculator_path=co2_calculator)
+#
 # ----------------
 # Run the threads
 # ----------------
 thread1.start()
+time.sleep(60)
 thread2.start()
+time.sleep(60)
 thread3.start()
-thread4.start()
+# thread4.start()
 
 
 
