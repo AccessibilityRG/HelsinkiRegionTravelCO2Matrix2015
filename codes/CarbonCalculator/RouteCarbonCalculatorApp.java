@@ -56,10 +56,13 @@ public class RouteCarbonCalculatorApp {
         String error_file = args[2];
         System.out.println("Error-tiedosto on " + error_file);
 
+        String ttFileName = args[3];
+        System.out.println("ttFile on " + ttFileName);
+
         PrintWriter outFile = new PrintWriter(new FileWriter(output_file));
         PrintWriter errFile = new PrintWriter(new FileWriter(error_file));
 
-        PrintWriter ttFile = new PrintWriter(new FileWriter("ttFile.txt"));
+        PrintWriter ttFile = new PrintWriter(new FileWriter(ttFileName));
 
         System.out.println("Luodaan tunnistustaulukko.");
         tunnistusTaulukko = createRouteHash(inFile);
