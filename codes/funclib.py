@@ -2,7 +2,7 @@ __author__ = 'hentenka'
 import os, sys
 import subprocess
 import pandas as pd
-from base import POSTGIS_DB_NAME, POSTGIS_PORT, POSTGIS_PWD, POSTGIS_USERNAME, IP_ADDRESS
+from base import POSTGIS_DB_NAME, POSTGIS_PORT, POSTGIS_PWD, POSTGIS_USERNAME, IP_ADDRESS, DATA_TABLE
 import psycopg2
 from sqlalchemy import create_engine, MetaData, Table
 from sqlalchemy.orm import create_session, sessionmaker
@@ -124,9 +124,11 @@ def checkIfDbTableExists(conn, cursor, table):
     print("Creating DB table: %s" % table)
     return False
 
-def createPrimaryKey(conn, cursor, table, col_name):
+def createPrimaryKey(col_name):
+    # Create connection to DB ==> TODO: This should be in class constructor
+    conn, cursor = connect_to_DB()
     # Create a primary key to database
-    sql = "ALTER TABLE %s ADD COLUMN %s SERIAL" % (table, col_name)
+    sql = "ALTER TABLE %s ADD COLUMN %s SERIAL" % (DATA_TABLE, col_name)
     print(sql)
     cursor.execute(sql)
     conn.commit()
@@ -146,6 +148,17 @@ def createIndex(conn, cursor, table, column, index_col):
     sql = "CREATE INDEX %s ON %s (%s);" % (index_col, table, column)
     print(sql)
 
+    cursor.execute(sql)
+    conn.commit()
+
+def createMatrixIndexes():
+    # Create connection to DB
+    conn, cursor = connect_to_DB()
+    # Create Index for 'to_id' and 'from_id'
+    sql = "CREATE INDEX fromididx ON %s (from_id)" % DATA_TABLE
+    cursor.execute(sql)
+    conn.commit()
+    sql = "CREATE INDEX toididx ON %s (to_id)" % DATA_TABLE
     cursor.execute(sql)
     conn.commit()
 
