@@ -38,7 +38,7 @@ def findMatchingFile(source_fp, targetPaths, mode='pt'):
     print("Error: Could not find corresponding target_file for %s in %s" % (Source_ID, search_folder))
     sys.exit()
 
-def runRouteCarbonCalculator(src_file, path_to_carbon_calc, output_dir):
+def runRouteCarbonCalculator(src_file, path_to_carbon_calc, output_dir, threadID):
     # Create separate folders for RESULTS and ERRORS
     co2_result_target_dir = os.path.join(output_dir, "RESULTS")
     co2_error_target_dir = os.path.join(output_dir, "ERRORS")
@@ -48,16 +48,17 @@ def runRouteCarbonCalculator(src_file, path_to_carbon_calc, output_dir):
     if not os.path.exists(co2_error_target_dir):
         os.makedirs(co2_error_target_dir)
 
-    # Create output paths for result and error file
+    # Create output paths for result, error and ttFile files
     result_file = "%s_CO2.txt" % os.path.basename(src_file).split('.')[0]
     error_file = "%s_CO2_ERRORS.txt" % os.path.basename(src_file).split('.')[0]
+    ttFile = "ttFile_%s.txt" % threadID
 
     # Target paths
     co2_result = os.path.join(co2_result_target_dir, result_file)
     co2_error = os.path.join(co2_error_target_dir, error_file)
 
     # Parse command
-    command = "java -jar %s %s %s %s" % (path_to_carbon_calc, src_file, co2_result, co2_error)
+    command = "java -jar %s %s %s %s %s" % (path_to_carbon_calc, src_file, co2_result, co2_error, ttFile)
     print(command)
     subprocess.call(command)
 
