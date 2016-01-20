@@ -4,6 +4,11 @@ import subprocess
 import pandas as pd
 from base import POSTGIS_DB_NAME, POSTGIS_PORT, POSTGIS_PWD, POSTGIS_USERNAME, IP_ADDRESS
 import psycopg2
+from sqlalchemy import create_engine, MetaData, Table
+from sqlalchemy.orm import create_session, sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
+
+Base = declarative_base()
 
 def filePathsToList(source_dir, criteria, fileformat):
     flist = []
@@ -88,22 +93,35 @@ def combineDatasets(fp_list, sep_list, name_list):
     # Return DataFrame
     return data
 
-def connect_to_DB(host, db_name, username, pwd, port):
+def connect_to_DB():
+    # PostGIS Authentication crecedentials
+    db_name, host, port, username, pwd = POSTGIS_DB_NAME, IP_ADDRESS, POSTGIS_PORT, POSTGIS_USERNAME, POSTGIS_PWD
     conn_string = "host='%s' dbname='%s' user='%s' password='%s' port='%s'" % (host, db_name, username, pwd, port)
-    #print(conn_string)
     conn = psycopg2.connect(conn_string)
     cursor = conn.cursor()
     return conn, cursor
 
-def createTTMtable14(conn, cursor, table_name):
+def create_DB_engine():
+    # PostGIS Authentication crecedentials
+    db_name, host, port, username, pwd = POSTGIS_DB_NAME, IP_ADDRESS, POSTGIS_PORT, POSTGIS_USERNAME, POSTGIS_PWD
+    db_url = r'postgresql://%s:%s@%s:%s/%s' % (username, pwd, host, port, db_name)
+    engine = create_engine(db_url)
+    # Set schema
+    Base.metadata.create_all(engine)
+    return engine
+
+def createCO2table15(conn, cursor, table_name):
     # Create a table [table_name]
-    cursor.execute("CREATE TABLE %s (from_id integer, to_id integer, walk_t integer, walk_d integer, pt_m_tt integer, pt_m_t integer, pt_m_d integer, car_m_t integer, car_m_d integer);" % table_name)
+    cursor.execute("CREATE TABLE %s (from_id integer, to_id integer, pt_r_co2 integer, pt_r_dd integer, pt_r_l integer, pt_m_co2 integer, pt_m_dd integer, pt_m_l integer, car_r_co2 integer, car_r_dd integer, car_m_co2 integer, car_m_dd integer);" % table_name)
     conn.commit()
 
-def createTTMtable15(conn, cursor, table_name):
-    # Create a table [table_name]
-    cursor.execute("CREATE TABLE %s (from_id integer, to_id integer, walk_t integer, walk_d integer, pt_r_tt integer, pt_r_t integer, pt_r_d integer,  pt_m_tt integer, pt_m_t integer, pt_m_d integer, car_r_t integer, car_r_d integer, car_m_t integer, car_m_d integer);" % table_name)
-    conn.commit()
+def checkIfDbTableExists(conn, cursor, table):
+    cursor.execute("select exists(select relname from pg_class where relname='" + table + "')")
+    if cursor.fetchone()[0]:
+        print("Table exists already, passing..")
+        return True
+    print("Creating DB table: %s" % table)
+    return False
 
 def createPrimaryKey(conn, cursor, table, col_name):
     # Create a primary key to database
