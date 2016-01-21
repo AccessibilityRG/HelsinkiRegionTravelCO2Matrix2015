@@ -7,7 +7,7 @@ Dataset was produced by [Accessibility Research Group](http://www.helsinki.fi/sc
  
 [__Helsinki Region Travel CO2 Matrix 2015__](http://www.helsinki.fi/science/accessibility/data) is a dataset that contains CO2 emissions (+some additional attributes) produced by public transportation (PT) and private car
 for routes between all 250 m x 250 m grid cell centroids (n = 13231) in the Capital Region of Helsinki. Calculations were done separately for two different time of the day using 
-rush hour (09:00-10:00) and midday (12:00-13:00) schedules/traffic conditions. The grid cells are compatible with the statistical 
+rush hour (08:00-09:00) and midday (12:00-13:00) schedules/traffic conditions. The grid cells are compatible with the statistical 
 grid cells in the YKR (yhdyskuntarakenteen seurantajärjestelmä) data set produced by the Finnish Environment Institute (SYKE). 
 
 The CO2 emissions are calculated based on the distance that is travelled with different travel modes (private car & PT) on a individual route multiplied with a specific carbon emission factors.
