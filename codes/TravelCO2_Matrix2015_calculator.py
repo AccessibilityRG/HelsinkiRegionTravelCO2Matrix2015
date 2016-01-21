@@ -79,53 +79,53 @@ def createCO2Matrix(threadID, start_index, end_index, pt_r_dir, pt_m_dir, car_r_
             pt_08_co2file = fl.runRouteCarbonCalculator(src_file=ptfp08, path_to_carbon_calc=co2_calculator_path, output_dir=pt_r_co2_dir, threadID=threadID)
             pt_12_co2file = fl.runRouteCarbonCalculator(src_file=ptfp12, path_to_carbon_calc=co2_calculator_path, output_dir=pt_m_co2_dir, threadID=threadID)
 
-            # Calculate the CO2 results for Car
-            car_08_co2file = cco2.calculateCarCO2emissions(src_file=carfp08, output_dir=car_r_co2_dir)
-            car_12_co2file = cco2.calculateCarCO2emissions(src_file=carfp12, output_dir=car_m_co2_dir)
-
-            # Combine datasets into a single DataFrame
-            # -----------------------------------------
-
-            # LIST ORDER MUST MATCH IN FOLLOWING 3 LISTS:
-            # Files that will be processed
-            fp_list = [pt_08_co2file, pt_12_co2file, car_08_co2file, car_12_co2file]
-            # Suffices for the columns in processed files that will be inserted
-            name_list = ['_PT_r', '_PT_m', '_Car_r', '_Car_m']
-            # Separators for each file
-            sep_list = [';', ';', ';', ';']
-
-            # Combine datasets
-            co2_emissions = fl.combineDatasets(fp_list=fp_list, sep_list=sep_list, name_list=name_list)
-
-            # ---------------------------------------
-            # Parse necessary columns for the Matrix
-            # ---------------------------------------
-            selected_cols = ['from_id', 'to_id', 'Total CO2_PT_r', 'distanceByPT_PT_r', 'Lines used_PT_r', 'Total CO2_PT_m', 'distanceByPT_PT_m', 'Lines used_PT_m', 'co2FromCar_Car_r', 'distDriven_Car_r', 'co2FromCar_Car_m', 'distDriven_Car_m']
-            co2_matrix = co2_emissions[selected_cols]
-
-            # Rename columns
-            co2_matrix.columns = ['from_id', 'to_id', 'pt_r_co2', 'pt_r_dd', 'pt_r_l', 'pt_m_co2', 'pt_m_dd', 'pt_m_l', 'car_r_co2', 'car_r_dd', 'car_m_co2', 'car_m_dd']
-
-            # ---------------------------------
-            # Create PostGIS table if needed
-            # ---------------------------------
-
-            # Connect to Database
-            conn, cursor = fl.connect_to_DB()
-
-            # Create DB engine
-            engine = fl.create_DB_engine()
-
-            # Create Table if it does not exist
-            if not fl.checkIfDbTableExists(conn, cursor, table=DATA_TABLE):
-                fl.createCO2table15(conn, cursor, table_name=DATA_TABLE)
-
-            # ---------------------------------
-            # Push CO2 data to PostGIS
-            # ---------------------------------
-
-            print("Pushing data to table: %s" % DATA_TABLE)
-            co2_matrix.to_sql(DATA_TABLE, engine, if_exists='append', index=False)
+            # # Calculate the CO2 results for Car
+            # car_08_co2file = cco2.calculateCarCO2emissions(src_file=carfp08, output_dir=car_r_co2_dir)
+            # car_12_co2file = cco2.calculateCarCO2emissions(src_file=carfp12, output_dir=car_m_co2_dir)
+            #
+            # # Combine datasets into a single DataFrame
+            # # -----------------------------------------
+            #
+            # # LIST ORDER MUST MATCH IN FOLLOWING 3 LISTS:
+            # # Files that will be processed
+            # fp_list = [pt_08_co2file, pt_12_co2file, car_08_co2file, car_12_co2file]
+            # # Suffices for the columns in processed files that will be inserted
+            # name_list = ['_PT_r', '_PT_m', '_Car_r', '_Car_m']
+            # # Separators for each file
+            # sep_list = [';', ';', ';', ';']
+            #
+            # # Combine datasets
+            # co2_emissions = fl.combineDatasets(fp_list=fp_list, sep_list=sep_list, name_list=name_list)
+            #
+            # # ---------------------------------------
+            # # Parse necessary columns for the Matrix
+            # # ---------------------------------------
+            # selected_cols = ['from_id', 'to_id', 'Total CO2_PT_r', 'distanceByPT_PT_r', 'Lines used_PT_r', 'Total CO2_PT_m', 'distanceByPT_PT_m', 'Lines used_PT_m', 'co2FromCar_Car_r', 'distDriven_Car_r', 'co2FromCar_Car_m', 'distDriven_Car_m']
+            # co2_matrix = co2_emissions[selected_cols]
+            #
+            # # Rename columns
+            # co2_matrix.columns = ['from_id', 'to_id', 'pt_r_co2', 'pt_r_dd', 'pt_r_l', 'pt_m_co2', 'pt_m_dd', 'pt_m_l', 'car_r_co2', 'car_r_dd', 'car_m_co2', 'car_m_dd']
+            #
+            # # ---------------------------------
+            # # Create PostGIS table if needed
+            # # ---------------------------------
+            #
+            # # Connect to Database
+            # conn, cursor = fl.connect_to_DB()
+            #
+            # # Create DB engine
+            # engine = fl.create_DB_engine()
+            #
+            # # Create Table if it does not exist
+            # if not fl.checkIfDbTableExists(conn, cursor, table=DATA_TABLE):
+            #     fl.createCO2table15(conn, cursor, table_name=DATA_TABLE)
+            #
+            # # ---------------------------------
+            # # Push CO2 data to PostGIS
+            # # ---------------------------------
+            #
+            # print("Pushing data to table: %s" % DATA_TABLE)
+            # co2_matrix.to_sql(DATA_TABLE, engine, if_exists='append', index=False)
 
 # -------------
 # Folder paths
@@ -162,7 +162,7 @@ co2_calculator = r"C:\HY-Data\HENTENKA\KOODIT\HelsinkiRegionTravelCO2\codes\Carb
 # =======
 
 # Set up start-end indices
-start_idx = 121
+start_idx = 135 #121
 end_idx = 180
 
 thread1 = co2MatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, pt_r_dir=pt_08_dir, pt_m_dir=pt_12_dir, car_r_dir=car_08_dir, car_m_dir=car_12_dir,
@@ -172,7 +172,7 @@ thread1 = co2MatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=
 # =======
 
 # Set up start-end indices
-start_idx = 180
+start_idx = 194 #180
 end_idx = 220
 
 thread2 = co2MatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, pt_r_dir=pt_08_dir, pt_m_dir=pt_12_dir, car_r_dir=car_08_dir, car_m_dir=car_12_dir,
@@ -182,7 +182,7 @@ thread2 = co2MatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=
 # =======
 
 # Set up start-end indices
-start_idx = 220
+start_idx = 234 #220
 end_idx = 293
 
 thread3 = co2MatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, pt_r_dir=pt_08_dir, pt_m_dir=pt_12_dir, car_r_dir=car_08_dir, car_m_dir=car_12_dir,
@@ -193,10 +193,10 @@ thread3 = co2MatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=
 # ----------------
 thread1.start()
 # Wait for a while before starting next one
-time.sleep(60)
+time.sleep(5)
 thread2.start()
 # Wait for a while before starting next one
-time.sleep(60)
+time.sleep(5)
 thread3.start()
 
 
