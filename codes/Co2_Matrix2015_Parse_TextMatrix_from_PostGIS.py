@@ -1,9 +1,9 @@
 import pandas as pd
 import geopandas as gpd
 import os, sys
-import funclib as fl
+import funclib
 from base import DATA_TABLE
-import threading
+import multiprocessing
 
 """This script creates Helsinki Region Travel CO2 Matrix 2015 text-file version.
    Data is pulled from PostGIS table that was created using TravelCO2_Matrix2015_calculator.py script.
@@ -21,24 +21,25 @@ import threading
 
    """
 
-class co2TextMatrixCreator (threading.Thread):
+class co2TextMatrixCreator ():
 
-    def __init__(self, threadID, start_index, end_index, ykr_grid_df, output_co2_dir):
-        threading.Thread.__init__(self)
+    def __init__(self, fl, threadID, start_index, end_index, ykr_grid_df, output_co2_dir):
+        self.fl = fl
         self.threadID = threadID
         self.start_index = start_index
         self.end_index = end_index
         self.ykr_grid_df = ykr_grid_df
         self.output_co2_dir = output_co2_dir
 
-    def run(self):
-        print("Starting thread: %s" % self.threadID)
-        createCO2TextMatrix(ykr_grid=self.ykr_grid_df, output_co2_dir=self.output_co2_dir,
-                            start_index=self.start_index, end_index=self.end_index)
-        print("All done in thread: %s" % self.threadID)
 
+def createCO2TextMatrix(obj):
 
-def createCO2TextMatrix(ykr_grid, output_co2_dir, start_index, end_index):
+    # Determine parameters
+    fl = obj.fl
+    ykr_grid = obj.ykr_grid_df
+    output_co2_dir = obj.output_co2_dir
+    start_index = obj.start_index
+    end_index = obj.end_index
 
     # Iterate over individual YKR_IDs and create
     for index, row in ykr_grid.iterrows():
@@ -86,78 +87,85 @@ def createCO2TextMatrix(ykr_grid, output_co2_dir, start_index, end_index):
             # Write results to disk
             data.to_csv(outfile, sep=';', index=False, mode='w', float_format="%.0f")
 
-    
-# -------------
-# File paths
-# -------------
+if __name__ == '__main__':
 
-ykr_fp = r"C:\HY-Data\HENTENKA\Python\MassaAjoNiputus\ShapeFileet\MetropAccess_YKR_grid\MetropAccess_YKR_grid_EurefFIN.shp"
-outDir = r"E:\Matriisiajot2015\RESULTS\HelsinkiRegion_TravelCO2Matrix2015"
+    # -------------
+    # File paths
+    # -------------
 
-# =========================================================
-# Do PostGIS stuff first
-# =========================================================
+    ykr_fp = r"C:\HY-Data\HENTENKA\Python\MassaAjoNiputus\ShapeFileet\MetropAccess_YKR_grid\MetropAccess_YKR_grid_EurefFIN.shp"
+    outDir = r"E:\Matriisiajot2015\RESULTS\HelsinkiRegion_TravelCO2Matrix2015"
 
-# Create Primary key
-fl.createPrimaryKey(col_name='Id')
+    # --------------
+    # Read YKR_grid
+    # --------------
+    ykr = gpd.read_file(ykr_fp)
 
-# Create PostGIS Indices for 'to_id' and 'from_id' to enable fast lookups
-fl.createMatrixIndexes()
+    # =========================================================
+    # Do PostGIS stuff first
+    # =========================================================
 
-# --------------
-# Read YKR_grid
-# --------------
-ykr = gpd.read_file(ykr_fp)
+    fl = funclib.matrixMethods(matrix_dir=outDir, ykr_grid=ykr)
 
-# =========================================================
-# Create threads ==> Enable multiprocessing in parallel
-# =========================================================
+    # Create Primary key
+    fl.createPrimaryKey(col_name='Id')
 
-# NOTICE!
-# You should take care that there is sufficiently memory (RAM) in your computer.
-# Creating too many threads may exceed your memory limit and produce a memory error.
-# At least 5 threads can be used without problems with computer that has 16GB of RAM.
+    # Create PostGIS Indices for 'to_id' and 'from_id' to enable fast lookups
+    fl.createMatrixIndexes()
 
-# THREAD1
-# =======
-# Set up start-end indices
-start_idx = 0
-end_idx = 50
-thread1 = co2TextMatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_df=ykr, output_co2_dir=outDir)
+    # Calculate the Fuel consumption  # TODO: implement this!
 
-# THREAD2
-# =======
-# Set up start-end indices
-start_idx = 50
-end_idx = 100
-thread2 = co2TextMatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_df=ykr, output_co2_dir=outDir)
+    # ==============================================================
+    # Create process objects ==> Enable multiprocessing in parallel
+    # ==============================================================
 
-# THREAD3
-# =======
-# Set up start-end indices
-start_idx = 150
-end_idx = 200
-thread3 = co2TextMatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_df=ykr, output_co2_dir=outDir)
+    # NOTICE!
+    # You should take care that there is sufficiently memory (RAM) in your computer.
+    # Creating too many processes may exceed your memory limit and produce a memory error.
+    # At least 5 processes can be used without problems with computer that has 16GB of RAM.
 
-# THREAD4
-# =======
-# Set up start-end indices
-start_idx = 200
-end_idx = 250
-thread4 = co2TextMatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_df=ykr, output_co2_dir=outDir)
+    # Process1
+    # =======
+    # Set up start-end indices
+    start_idx = 0
+    end_idx = 50
+    o1 = co2TextMatrixCreator(fl=fl, threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_df=ykr, output_co2_dir=outDir)
 
-# THREAD5
-# =======
-# Set up start-end indices
-start_idx = 250
-end_idx = 293
-thread5 = co2TextMatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_df=ykr, output_co2_dir=outDir)
+    # Process2
+    # =======
+    # Set up start-end indices
+    start_idx = 50
+    end_idx = 100
+    o2 = co2TextMatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_df=ykr, output_co2_dir=outDir)
 
-# ----------------
-# Run the threads
-# ----------------
-thread1.start()
-thread2.start()
-thread3.start()
-thread4.start()
-thread5.start()
+    # Process3
+    # =======
+    # Set up start-end indices
+    start_idx = 150
+    end_idx = 200
+    o3 = co2TextMatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_df=ykr, output_co2_dir=outDir)
+
+    # Process4
+    # =======
+    # Set up start-end indices
+    start_idx = 200
+    end_idx = 250
+    o4 = co2TextMatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_df=ykr, output_co2_dir=outDir)
+
+    # Process5
+    # =======
+    # Set up start-end indices
+    start_idx = 250
+    end_idx = 293
+    o5 = co2TextMatrixCreator(threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_df=ykr, output_co2_dir=outDir)
+
+    # --------------------------------------------------------
+    # Run the processes in parallel using multiprocessing.Pool
+    # --------------------------------------------------------
+    objList = [o1, o2, o3, o4, o5]
+
+    # Create a pool
+    pool = multiprocessing.Pool()
+
+    # Run processes in parallel
+    pool.map(createCO2TextMatrix, objList)

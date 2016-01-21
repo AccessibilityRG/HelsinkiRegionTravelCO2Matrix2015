@@ -91,7 +91,7 @@ def createCO2Matrix(objInstance):
             car_08_co2file = fl.getCO2File(travel_mode="car", time='08')
             car_12_co2file = fl.getCO2File(travel_mode="car", time='12')
 
-
+            # -----------------------------------------
             # Combine datasets into a single DataFrame
             # -----------------------------------------
 
@@ -218,7 +218,7 @@ if __name__ == '__main__':
     # Create a pool
     pool = multiprocessing.Pool()
 
-    # Run processes in paralle
+    # Run processes in parallel
     pool.map(createCO2Matrix, objList)
 
 
