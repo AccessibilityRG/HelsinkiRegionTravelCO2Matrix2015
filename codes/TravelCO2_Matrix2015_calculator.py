@@ -2,7 +2,6 @@ import os, sys
 import funclib
 from base import DATA_TABLE
 import multiprocessing
-import time
 
 """This script parses Helsinki Region Travel CO2 Matrix 2015 and pushes it to PostGIS Table.
    A specific Java application called RouteCarbonCalculator (programmed by Jaani Lahtinen, modified by Henrikki Tenkanen),
@@ -85,55 +84,53 @@ def createCO2Matrix(objInstance):
             pt_12_co2file = fl.getCO2File(travel_mode="pt", time='12')
 
             # Calculate the CO2 results for Car
-            car_08_co2file = fl.calculateCarCO2emissions(src_file=carfp08, time='08')
-            car_12_co2file = fl.calculateCarCO2emissions(src_file=carfp12, time='12')
+            #car_08_co2file = fl.calculateCarCO2emissions(src_file=carfp08, time='08')
+            #car_12_co2file = fl.calculateCarCO2emissions(src_file=carfp12, time='12')
 
-            # # Get File paths
-            # car_08_co2file = fl.getCO2File(travel_mode="car", time='08')
-            # car_12_co2file = fl.getCO2File(travel_mode="car", time='12')
-            #
-            #
-            # # Combine datasets into a single DataFrame
-            # # -----------------------------------------
-            #
-            # # LIST ORDER MUST MATCH IN FOLLOWING 3 LISTS:
-            # # Files that will be processed
-            # fp_list = [pt_08_co2file, pt_12_co2file, car_08_co2file, car_12_co2file]
-            # # Suffices for the columns in processed files that will be inserted
-            # name_list = ['_PT_r', '_PT_m', '_Car_r', '_Car_m']
-            # # Separators for each file
-            # sep_list = [';', ';', ';', ';']
-            #
-            # # Combine datasets
-            # co2_emissions = fl.combineDatasets(fp_list=fp_list, sep_list=sep_list, name_list=name_list)
-            #
-            # # ---------------------------------------
-            # # Parse necessary columns for the Matrix
-            # # ---------------------------------------
-            # selected_cols = ['from_id', 'to_id', 'Total CO2_PT_r', 'distanceByPT_PT_r', 'Lines used_PT_r', 'Total CO2_PT_m', 'distanceByPT_PT_m', 'Lines used_PT_m', 'co2FromCar_Car_r', 'distDriven_Car_r', 'co2FromCar_Car_m', 'distDriven_Car_m']
-            # co2_matrix = co2_emissions[selected_cols]
-            #
-            # # Rename columns
-            # co2_matrix.columns = ['from_id', 'to_id', 'pt_r_co2', 'pt_r_dd', 'pt_r_l', 'pt_m_co2', 'pt_m_dd', 'pt_m_l', 'car_r_co2', 'car_r_dd', 'car_m_co2', 'car_m_dd']
-            #
-            # # ---------------------------------
-            # # Create PostGIS table if needed
-            # # ---------------------------------
-            #
-            # print(DATA_TABLE)
-            #
-            # # Create DB engine
-            # engine = fl.create_DB_engine()
-            #
-            # # Create Table if it does not exist
-            # #fl.createTableIfNotExist()
-            #
-            # # ---------------------------------
-            # # Push CO2 data to PostGIS
-            # # ---------------------------------
-            #
-            # print("Pushing data to table: %s" % DATA_TABLE)
-            # co2_matrix.to_sql(DATA_TABLE, engine, if_exists='append', index=False)
+            # Get File paths
+            car_08_co2file = fl.getCO2File(travel_mode="car", time='08')
+            car_12_co2file = fl.getCO2File(travel_mode="car", time='12')
+
+
+            # Combine datasets into a single DataFrame
+            # -----------------------------------------
+
+            # LIST ORDER MUST MATCH IN FOLLOWING 3 LISTS:
+            # Files that will be processed
+            fp_list = [pt_08_co2file, pt_12_co2file, car_08_co2file, car_12_co2file]
+            # Suffices for the columns in processed files that will be inserted
+            name_list = ['_PT_r', '_PT_m', '_Car_r', '_Car_m']
+            # Separators for each file
+            sep_list = [';', ';', ';', ';']
+
+            # Combine datasets
+            co2_emissions = fl.combineDatasets(fp_list=fp_list, sep_list=sep_list, name_list=name_list)
+
+            # ---------------------------------------
+            # Parse necessary columns for the Matrix
+            # ---------------------------------------
+            selected_cols = ['from_id', 'to_id', 'Total CO2_PT_r', 'distanceByPT_PT_r', 'Lines used_PT_r', 'Total CO2_PT_m', 'distanceByPT_PT_m', 'Lines used_PT_m', 'co2FromCar_Car_r', 'distDriven_Car_r', 'co2FromCar_Car_m', 'distDriven_Car_m']
+            co2_matrix = co2_emissions[selected_cols]
+
+            # Rename columns
+            co2_matrix.columns = ['from_id', 'to_id', 'pt_r_co2', 'pt_r_dd', 'pt_r_l', 'pt_m_co2', 'pt_m_dd', 'pt_m_l', 'car_r_co2', 'car_r_dd', 'car_m_co2', 'car_m_dd']
+
+            # ---------------------------------
+            # Create PostGIS table if needed
+            # ---------------------------------
+
+            # Create DB engine
+            engine = fl.create_DB_engine()
+
+            # Create Table if it does not exist
+            #fl.createTableIfNotExist()
+
+            # ---------------------------------
+            # Push CO2 data to PostGIS
+            # ---------------------------------
+
+            print("Pushing data to table: %s" % DATA_TABLE)
+            co2_matrix.to_sql(DATA_TABLE, engine, if_exists='append', index=False)
 
 
 
@@ -213,15 +210,15 @@ if __name__ == '__main__':
                                 car_r_dir=car_08_dir, car_m_dir=car_12_dir, car_r_co2_dir=car_08_co2_dir, car_m_co2_dir=car_12_co2_dir,
                                 co2_calculator_path=co2_calculator)
 
-    # -------------------------------
-    # Run the processes in parallel
-    # -------------------------------
+    # --------------------------------------------------------
+    # Run the processes in parallel using multiprocessing.Pool
+    # --------------------------------------------------------
     objList = [o1, o2, o3]
 
     # Create a pool
     pool = multiprocessing.Pool()
 
-    # Run processes
+    # Run processes in paralle
     pool.map(createCO2Matrix, objList)
 
 
