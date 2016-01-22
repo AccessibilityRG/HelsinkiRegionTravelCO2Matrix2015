@@ -238,7 +238,7 @@ class matrixMethods ():
 
     def createPrimaryKey(self, col_name):
         # Create a primary key to database
-        sql = "ALTER TABLE %s ADD COLUMN %s SERIAL" % (DATA_TABLE, col_name)
+        sql = "ALTER TABLE %s ADD COLUMN %s SERIAL;" % (DATA_TABLE, col_name)
         print(sql)
         self.cursor.execute(sql)
         self.conn.commit()
@@ -282,6 +282,21 @@ class matrixMethods ():
             sql = "ALTER TABLE %s RENAME COLUMN %s TO %s;" % (table, old_name, new_name)
             self.cursor.execute(sql)
         self.conn.commit()
+
+    def addColumnToTable(self, table, column_name, data_type):
+        """Data type must be passed as string.
+        Supported data types can be found from: http://www.postgresql.org/docs/current/static/datatype.html """
+
+        sql = "ALTER TABLE %s ADD COLUMN %s %s;" % (table, column_name, data_type)
+        print(sql)
+        self.cursor.execute(sql)
+        self.conn.commit()
+
+    def commitSQL(self, sql):
+        print(sql)
+        self.cursor.execute(sql)
+        self.conn.commit()
+
 
     """
    This calculator calculates the CO2 emissions from Car in Helsinki Region.

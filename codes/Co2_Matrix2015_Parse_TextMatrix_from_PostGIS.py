@@ -74,8 +74,8 @@ def createCO2TextMatrix(obj):
             datacols = ['from_id', 'to_id',
                         'pt_r_co2', 'pt_r_dd', 'pt_r_l',
                         'pt_m_co2', 'pt_m_dd', 'pt_m_l',
-                        'car_r_co2', 'car_r_dd',
-                        'car_m_t', 'car_m_d']
+                        'car_r_co2', 'car_r_dd', 'car_r_fc',
+                        'car_m_t', 'car_m_d', 'car_m_fc']
             data = data[datacols]
 
             # Create folder if does not exist
@@ -107,13 +107,45 @@ if __name__ == '__main__':
 
     fl = funclib.matrixMethods(matrix_dir=outDir, ykr_grid=ykr)
 
+    # Connect to DB
+    fl.connect_to_DB()
+
+    # Add columns for fuel consumption
+    dtype = 'REAL'
+
+    col_name = 'car_r_fc'
+    #fl.addColumnToTable(table=DATA_TABLE, column_name=col_name, data_type=dtype)
+
+    col_name = 'car_m_fc'
+    #fl.addColumnToTable(table=DATA_TABLE, column_name=col_name, data_type=dtype)
+
     # Create Primary key
-    fl.createPrimaryKey(col_name='Id')
+    #fl.createPrimaryKey(col_name='Id')
+    # Set Primary key
+    #fl.setPrimaryKeyCol(table=DATA_TABLE, key_column='Id')
+
+    # Calculate the Fuel consumption
+    # -------------------------------
+    # Fuel consumption is approximately 7.3 l / 100 km (taking into account diesel/petrol + different car age groups)
+
+    # Meters as per 100 km
+    meters_in_100km = 100000.0
+    fuel_consumption = 7.3  # l per 100 km
+
+    input_col = 'car_r_dd'
+    target_col = 'car_r_fc'
+    sql = "UPDATE %s SET %s = ((%s / %s) * %s);" % (DATA_TABLE, target_col, input_col, meters_in_100km, fuel_consumption)
+    fl.commitSQL(sql)
+
+    input_col = 'car_m_dd'
+    target_col = 'car_m_fc'
+    sql = "UPDATE %s SET %s = ((%s / %s) * %s);" % (DATA_TABLE, target_col, input_col, meters_in_100km, fuel_consumption)
+    fl.commitSQL(sql)
+
+    sys.exit()
 
     # Create PostGIS Indices for 'to_id' and 'from_id' to enable fast lookups
     fl.createMatrixIndexes()
-
-    # Calculate the Fuel consumption  # TODO: implement this!
 
     # ==============================================================
     # Create process objects ==> Enable multiprocessing in parallel

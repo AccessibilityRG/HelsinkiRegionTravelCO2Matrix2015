@@ -29,14 +29,35 @@ __Scientific examples__ of the approach used here can be read from the following
 Modelling library patronage patterns and their related CO2-emissions](http://www.sciencedirect.com/science/article/pii/S014362281300163X). Applied Geography 44, 43-52.
 
 - Salonen, M. & Toivonen, T. (2013). [Modelling travel time in urban networks: comparable measures for private car and public transport.](http://www.sciencedirect.com/science/article/pii/S096669231300121X) Journal of Transport Geography 31, 143–153.
+
+## Attributes of Helsinki Region Travel CO2 Matrix 2015
+
+| Attribute | Definition |
+| --------- | ---------- | 
+| from_id   | Origin location |  
+
+to_id
+pt_r_co2
+pt_r_dd
+pt_r_l
+pt_m_co2
+pt_m_dd
+pt_m_l
+car_r_co2
+car_r_dd
+car_r_fc
+car_m_co2
+car_m_dd
+car_m_fc
+
  
 ## How calculations were done?
 
+CO2 and fuel consumption calculations are based on travel distances by different transport modes that are multiplied by [carbon emission factors or fuel consumption estimates](http://www.hsljalki.fi/en/menu/info). 
+Travel distances for each route are calculated using specific accessibility GIS tools called __[MetropAccess-Reititin](http://blogs.helsinki.fi/accessibility/reititin/)__ and __[MetropAccess-Digiroad](http://blogs.helsinki.fi/accessibility/digiroad-tool/)__ that are developed and maintained by Accessibility Research Group, Uni. Helsinki. 
 
 ### CO2 calculations
-CO2 calculations are based on travel distances by different transport modes that are multiplied by [carbon emission factors](http://www.hsljalki.fi/en/menu/info). 
-Travel distances for each route are calculated using specific accessibility GIS tools called __[MetropAccess-Reititin](http://blogs.helsinki.fi/accessibility/reititin/)__ and __[MetropAccess-Digiroad](http://blogs.helsinki.fi/accessibility/digiroad-tool/)__ that are developed and maintained by Accessibility Research Group, Uni. Helsinki. 
-  
+
 In the CO2 calculations, the travel distances by public transportation includes all trip legs that are done with any vehicle (i.e. bus, train, metro, tram, ferry), thus walking is excluded. 
 CO2 values for each trip leg and for each transport mode are calculated separately and then summed together. As Helsinki Region Public Transport is mainly CO2 free, the only transport modes
 that actually causes CO2 emissions are bus (73 g/km) and ferry (389 g/km). 
@@ -46,7 +67,28 @@ and the distance that it approximately takes to find a parking place at the dest
 More information about the car distance calculations can be found from [here](http://blogs.helsinki.fi/accessibility/digiroad-tool/). 
 
 ### Fuel consumption calculations
+Fuel consumption calculations (for private car) are also based on driving distance between origin and 
+destination locations plus additional distance that it takes to find a parking place (i.e. a single route). 
 
+Average fuel consumption of a car is depending on various factors such as:
+ 
+ - age and size of the car
+ - does the car use petrol or diesel
+ - weather conditions (summer vs winter)
+ - traffic conditions (city center vs rural highway)
+   
+Thus, it is rather impossible to calculate "accurate" and static fuel consumption for a car, let alone for all cars in Helsinki Region. 
+Hence, the average fuel consumption used in the matrix is a compromise and a heavily simplified measure.  
+__Fuel consumption for cars is estimated as 7.3 liters per 100 kilometers__ that is the average fuel consumption of all different 
+sizes of cars (small, midsize, large) and all different ages of cars (0-5 years, 6-10 years, 10+ years), and all cars using either petrol or diesel as fuel. 
+Fuel consumption estimates were retrieved from the [table](http://www.hsljalki.fi/en/menu/info) that is used by HRT to calculate the CO2 emissions.     
+The fuel consumption estimates are based on the [LIPASTO](http://lipasto.vtt.fi/en/liisa/fuel.htm) calculation system of the Technical Research Centre of Finland (VTT).
+      
+The estimated fuel consumption per route is calculated with following formula (example for rush hour fuel consumption):
+
+    (car_r_dd / 100000.0) * 7.3
+
+Using the above formula it is also possible to estimate the fuel consumption of routes by using a different fuel consumption factor (here 7.3 liters / 100 km).   
 
 ## Codes
 
