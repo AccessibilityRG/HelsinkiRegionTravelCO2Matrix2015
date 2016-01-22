@@ -34,21 +34,20 @@ Modelling library patronage patterns and their related CO2-emissions](http://www
 
 | Attribute | Definition |
 | --------- | ---------- | 
-| from_id   | Origin location |  
-
-to_id
-pt_r_co2
-pt_r_dd
-pt_r_l
-pt_m_co2
-pt_m_dd
-pt_m_l
-car_r_co2
-car_r_dd
-car_r_fc
-car_m_co2
-car_m_dd
-car_m_fc
+| from_id   | ID number of the origin grid cell |
+| to_id     | ID number of the destination grid cell |
+| pt_r_co2  | CO2 emissions of the route by public transportation during rush hour | 
+| pt_r_dd   | Distance of the route travelled by any public transportation vehicle during rush hour | 
+| pt_r_l    | Number of lines used on the route by public transportation during rush hour |
+| pt_m_co2  | CO2 emissions of the route by public transportation at midday |
+| pt_m_dd   | Distance of the route travelled by any public transportation vehicle during midday | 
+| pt_r_l    | Number of lines used on the route by public transportation during midday |
+| car_r_co2 | CO2 emissions of the route by private car during rush hour |
+| car_r_dd  | Distance driven by car during rush hour |
+| car_r_fc  | Estimated fuel consumption by car during rush hour |
+| car_r_co2 | CO2 emissions of the route by private car during midday |
+| car_r_dd  | Distance driven by car during midday |
+| car_r_fc  | Estimated fuel consumption by car during midday |
 
  
 ## How calculations were done?
@@ -79,7 +78,7 @@ Average fuel consumption of a car is depending on various factors such as:
    
 Thus, it is rather impossible to calculate "accurate" and static fuel consumption for a car, let alone for all cars in Helsinki Region. 
 Hence, the average fuel consumption used in the matrix is a compromise and a heavily simplified measure.  
-__Fuel consumption for cars is estimated as 7.3 liters per 100 kilometers__ that is the average fuel consumption of all different 
+__Fuel consumption for all cars is estimated as 7.3 liters per 100 kilometers__ that is the average fuel consumption of all different 
 sizes of cars (small, midsize, large) and all different ages of cars (0-5 years, 6-10 years, 10+ years), and all cars using either petrol or diesel as fuel. 
 Fuel consumption estimates were retrieved from the [table](http://www.hsljalki.fi/en/menu/info) that is used by HRT to calculate the CO2 emissions.     
 The fuel consumption estimates are based on the [LIPASTO](http://lipasto.vtt.fi/en/liisa/fuel.htm) calculation system of the Technical Research Centre of Finland (VTT).
