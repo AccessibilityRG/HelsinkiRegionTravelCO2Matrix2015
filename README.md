@@ -58,11 +58,11 @@ Travel distances for each route are calculated using specific accessibility GIS 
 ### CO2 calculations
 
 In the CO2 calculations, the travel distances by public transportation includes all trip legs that are done with any vehicle (i.e. bus, train, metro, tram, ferry), thus walking is excluded. 
-CO2 values for each trip leg and for each transport mode are calculated separately and then summed together. As Helsinki Region Public Transport is mainly CO2 free, the only transport modes
-that actually causes CO2 emissions are bus (73 g/km) and ferry (389 g/km). 
+CO2 values for each trip leg and for each transport mode are calculated separately and then summed together. As Helsinki Region Public Transport is mainly CO2 free, __the only transport modes
+that actually causes CO2 emissions are bus (73 g/km) and ferry (389 g/km)__. 
  
 Travel distances by private car takes into account the actual driving distance between origin and destination location 
-and the distance that it approximately takes to find a parking place at the destination. Carbon emission factor for private car is 171 g/km.   
+and the distance that it approximately takes to find a parking place at the destination. __Carbon emission factor for private car is 171 g/km__.   
 More information about the car distance calculations can be found from [here](http://blogs.helsinki.fi/accessibility/digiroad-tool/). 
 
 ### Fuel consumption calculations
