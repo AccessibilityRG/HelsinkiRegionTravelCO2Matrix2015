@@ -72,7 +72,7 @@ destination locations plus additional distance that it takes to find a parking p
 Average fuel consumption of a car is depending on various factors such as:
  
  - age and size of the car
- - does the car use petrol or diesel
+ - fuel that is used (petrol vs diesel)
  - weather conditions (summer vs winter)
  - traffic conditions (city center vs rural highway)
    
