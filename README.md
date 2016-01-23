@@ -100,7 +100,7 @@ at the Department of Geosciences and Geography, University of Helsinki, Finland.
 Following people have contributed / are responsible for creating this dataset:
 
  - Tuuli Toivonen (PI, leader of the research group)
- - Henrikki Tenkanen (PhD candidate, main contact person regarding the dataset, in charge of the analyses / calculations)
+ - [Henrikki Tenkanen](http://blogs.helsinki.fi/accessibility/people_and_contact/) (PhD candidate, main contact person regarding the dataset, in charge of the analyses / calculations)
  - Vuokko Heikinheimo (PhD candidate, Car travel distance calculations, documentation)  
  
 In addition, we thank [CSC - IT Center for Science](https://www.csc.fi/) for computational resources and help. 
