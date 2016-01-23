@@ -92,3 +92,17 @@ Using the above formula it is also possible to estimate the fuel consumption of 
 ## Codes
 
 1. [Parse CO2 emissions based on Helsinki Region Travel Time Matrix 2015 'raw' data](codes/README.md) 
+
+## Contribution / Contact
+Helsinki Region Travel CO2 Matrix 2015 was created by the [Accessibility Research Group](http://www.helsinki.fi/science/accessibility) 
+at the Department of Geosciences and Geography, University of Helsinki, Finland.
+ 
+Following people have contributed / are responsible for creating this dataset:
+
+ - Tuuli Toivonen (PI, leader of the research group)
+ - Henrikki Tenkanen (PhD candidate, main contact person regarding the dataset, in charge of the analyses / calculations)
+ - Vuokko Heikinheimo (PhD candidate, Car travel distance calculations, documentation)  
+ 
+In addition, we thank [CSC - IT Center for Science](https://www.csc.fi/) for computational resources and help. 
+CSC Taito and cPouta computing clusters were used as our workhorses to calculate the travel times/distances (approx. 1 billion routes were calculated) 
+using MetropAccess-Digiroad- and MetropAccess-Reititin Tools.   
