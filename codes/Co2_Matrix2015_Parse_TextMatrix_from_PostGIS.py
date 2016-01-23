@@ -1,5 +1,6 @@
 import pandas as pd
 import geopandas as gpd
+import numpy as np
 import os, sys
 import funclib
 from base import DATA_TABLE
@@ -9,6 +10,8 @@ import multiprocessing
    Data is pulled from PostGIS table that was created using TravelCO2_Matrix2015_calculator.py script.
 
    Multiprocessing is enabled: You can initialize multiple threads and run them simultaneously.
+
+   NOTICE: Before using the tools you need to adjust the Database connection details in base.py
 
    Process includes following steps:
 
@@ -93,19 +96,20 @@ if __name__ == '__main__':
     # File paths
     # -------------
 
-    ykr_fp = r"C:\HY-Data\HENTENKA\Python\MassaAjoNiputus\ShapeFileet\MetropAccess_YKR_grid\MetropAccess_YKR_grid_EurefFIN.shp"
+    #ykr_fp = r"C:\HY-Data\HENTENKA\Python\MassaAjoNiputus\ShapeFileet\MetropAccess_YKR_grid\MetropAccess_YKR_grid_EurefFIN.shp"
+    ykr_fp = r"C:\HY-Data\HENTENKA\Opetus\2015_GIS_Prosessiautomatisointi\MetropAccess_YKR_grid\MetropAccess_YKR_grid_EurefFIN.shp"
     outDir = r"E:\Matriisiajot2015\RESULTS\HelsinkiRegion_TravelCO2Matrix2015"
 
     # --------------
     # Read YKR_grid
     # --------------
     ykr = gpd.read_file(ykr_fp)
+    # Initialize matrix methods
+    fl = funclib.matrixMethods(matrix_dir=outDir, ykr_grid=ykr)
 
     # =========================================================
     # Do PostGIS stuff first
     # =========================================================
-
-    fl = funclib.matrixMethods(matrix_dir=outDir, ykr_grid=ykr)
 
     # Connect to DB
     fl.connect_to_DB()
@@ -128,19 +132,24 @@ if __name__ == '__main__':
     # -------------------------------
     # Fuel consumption is approximately 7.3 l / 100 km (taking into account diesel/petrol + different car age groups)
 
-    # Meters as per 100 km
-    meters_in_100km = 100000.0
-    fuel_consumption = 7.3  # l per 100 km
+    # Calculate fuel consumption factor
+    ages = ['y', 'm', 'o']
+    sizes = ['S', 'M', 'L']
+    formula = 'mean'
+    fuels = ['p', 'd']
+    PD = funclib.fuelConsumption(fuels=fuels, ages=ages, sizes=sizes, formula=formula)
 
+    # Get the result
+    fuel_consumption = np.round(PD.result, 1)  # ==> 7.3 l per 100 km
+
+    # Calculate the fuel consumption into DB
     input_col = 'car_r_dd'
     target_col = 'car_r_fc'
-    sql = "UPDATE %s SET %s = ((%s / %s) * %s);" % (DATA_TABLE, target_col, input_col, meters_in_100km, fuel_consumption)
-    fl.commitSQL(sql)
+    fl.calculateFuelConsumptionDB(input_col=input_col, target_col=target_col, fuel_consumption_factor=fuel_consumption)
 
     input_col = 'car_m_dd'
     target_col = 'car_m_fc'
-    sql = "UPDATE %s SET %s = ((%s / %s) * %s);" % (DATA_TABLE, target_col, input_col, meters_in_100km, fuel_consumption)
-    fl.commitSQL(sql)
+    fl.calculateFuelConsumptionDB(input_col=input_col, target_col=target_col, fuel_consumption_factor=fuel_consumption)
 
     sys.exit()
 

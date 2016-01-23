@@ -79,7 +79,7 @@ Average fuel consumption of a car is depending on various factors such as:
 Thus, it is rather impossible to calculate "accurate" and static fuel consumption for a car, let alone for all cars in Helsinki Region. 
 Hence, the average fuel consumption used in the matrix is a compromise and a heavily simplified measure.  
 __Fuel consumption for all cars is estimated as 7.3 liters per 100 kilometers__ that is the average fuel consumption of all different 
-sizes of cars (small, midsize, large) and all different ages of cars (0-5 years, 6-10 years, 10+ years), and all cars using either petrol or diesel as fuel. 
+sizes of cars (small, midsize, large), and all different ages of cars (0-5 years, 6-10 years, 10+ years), and all cars using either petrol or diesel as fuel. 
 Fuel consumption estimates were retrieved from the [table](http://www.hsljalki.fi/en/menu/info) that is used by HRT to calculate the CO2 emissions.     
 The fuel consumption estimates are based on the [LIPASTO](http://lipasto.vtt.fi/en/liisa/fuel.htm) calculation system of the Technical Research Centre of Finland (VTT).
       

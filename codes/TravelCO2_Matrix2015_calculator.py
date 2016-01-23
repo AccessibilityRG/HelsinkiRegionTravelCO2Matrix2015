@@ -5,9 +5,11 @@ import multiprocessing
 
 """This script parses Helsinki Region Travel CO2 Matrix 2015 and pushes it to PostGIS Table.
    A specific Java application called RouteCarbonCalculator (programmed by Jaani Lahtinen, modified by Henrikki Tenkanen),
-   and specific Python functionalities (found in funclib.py & car_CO2_calculator.py) are used to create the CO2 matrix.
+   and specific Python functionalities (found in funclib.py) are used to create the CO2 matrix.
 
    Multiprocessing is enabled: You can initialize multiple processes and run them simultaneously.
+
+   NOTICE: Before using the tools you need to adjust the Database connection details in base.py
 
    Process includes following steps:
 

@@ -1,6 +1,7 @@
 __author__ = 'hentenka'
 import os, sys
 import subprocess
+import numpy as np
 import pandas as pd
 import geopandas as gpd
 from base import POSTGIS_DB_NAME, POSTGIS_PORT, POSTGIS_PWD, POSTGIS_USERNAME, IP_ADDRESS, DATA_TABLE
@@ -169,7 +170,7 @@ class matrixMethods ():
         # Parse command
         command = "java -jar %s %s %s %s %s" % (path_to_carbon_calc, src_file, co2_result, co2_error, ttFile)
         print(command)
-        #subprocess.call(command)
+        subprocess.call(command)
 
         # Return result path
         return co2_result
@@ -292,6 +293,16 @@ class matrixMethods ():
         self.cursor.execute(sql)
         self.conn.commit()
 
+    def calculateFuelConsumptionDB(self, input_col, target_col, fuel_consumption_factor):
+        input_col = 'car_r_dd'
+        target_col = 'car_r_fc'
+
+        # Meters as per 100 km
+        meters_in_100km = 100000.0
+
+        sql = "UPDATE %s SET %s = ((%s / %s) * %s);" % (DATA_TABLE, target_col, input_col, meters_in_100km, fuel_consumption_factor)
+        self.commitSQL(sql)
+
     def commitSQL(self, sql):
         print(sql)
         self.cursor.execute(sql)
@@ -331,6 +342,93 @@ class matrixMethods ():
 
         # Return the output path
         return outfp
+
+class fuelConsumption:
+    """Abbreviations:
+            - Fisrt letter
+                p ==> Petrol
+                d ==> Diesel
+            - Second letter:
+               S ==> Small car
+               M ==> Midsized car
+               L ==> Large car
+            - Third letter:
+               y ==> young car (0-5 years old)
+               m ==> middle aged car (5-10 years old)
+               o ==> old car (10+ years old)
+        """
+    def __init__(self, fuels, ages, sizes, formula):
+        # Constructor
+        self.fuels = fuels
+        self.ages = ages
+        self.sizes = sizes
+        self.formula = formula
+
+        # Fuel consumption values for different types of cars
+        self.fuelValues = {
+            # Petrol
+            # ------
+            # Young
+            'pSy' : 6.0,
+            'pMy' : 8.0,
+            'pLy' : 9.6,
+
+            # Middle aged
+            'pSm' : 6.5,
+            'pMm' : 8.5,
+            'pLm' : 10.6,
+
+            # Old
+            'pSo' : 6.8,
+            'pMo' : 8.5,
+            'pLo' : 10.8,
+
+            # Diesel
+            # ------
+            # Young
+            'dSy' : 4.7,
+            'dMy' : 5.9,
+            'dLy' : 7.4,
+
+            # Middle aged
+            'dSm' : 4.9,
+            'dMm' : 6.3,
+            'dLm' : 7.6,
+
+            # Old
+            'dSo' : 5.5,
+            'dMo' : 6.2,
+            'dLo' : 7.7,
+        }
+
+        # Run fuel consumption calculations
+        self.result = self.calculateConsumption(sizes=self.sizes, ages=self.ages, fuels=self.fuels, formula=formula)
+
+    # ----------
+    # GETTERS
+    # ----------
+
+    def getValue(self, fuel='p', age='y', size='S'):
+        return self.fuelValues["%s%s%s" % (fuel, size, age)]
+
+    def calculateConsumption(self, sizes, ages, fuels, formula='mean'):
+        # Calculates the fuel consumption estimate using all types of cars
+        fc_values = []
+
+        # Iterate over parameters and fetch the consumption values
+        for fuel in fuels:
+            for age in ages:
+                for size in sizes:
+                    fc_values.append(self.getValue(fuel=fuel, age=age, size=size))
+
+        # Calculate statistics
+        if formula == 'mean':
+            return np.mean(fc_values)
+        elif formula == 'median':
+            return np.median(fc_values)
+
+
+
 
 
 
