@@ -3,7 +3,7 @@
 This repository demonstrates / documents how [Helsinki Region Travel CO2 Matrix 2015](http://www.helsinki.fi/science/accessibility/data) is calculated. 
 Dataset was produced by [Accessibility Research Group](http://www.helsinki.fi/science/accessibilty), University of Helsinki.
 
-Contents:
+__Contents:__
 
 - [What is Helsinki Region Travel CO2 Matrix 2015?](#what-is)
 - [Attributes of Helsinki Region Travel CO2 Matrix 2015](#attributes)
