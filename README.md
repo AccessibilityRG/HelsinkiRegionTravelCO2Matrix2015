@@ -9,6 +9,7 @@ __Contents:__
 - [Attributes of Helsinki Region Travel CO2 Matrix 2015](#attributes)
 - [How calculations were done?](#calculations)
 - [Licence](#license)
+- [How to cite this work?](#how-to-cite)
 - [Codes](#codes)
 - [Contribution / Contact](#contact)
 
@@ -103,6 +104,10 @@ Helsinki Region Travel CO2 Matrix 2015 by Accessibility Research Group (Universi
 More information about license: http://creativecommons.org/licenses/by/4.0/
 
 If the datasets are being used extensively in scientific research, we welcome the opportunity for co-authorship of papers. Please contact project leader to discuss about the matter.
+
+## <a name="how-to-cite"></a>Citation practices
+
+Coming soon.
 
 ## <a name="codes"></a>Codes
 
