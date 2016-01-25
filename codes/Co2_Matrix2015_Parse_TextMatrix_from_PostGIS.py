@@ -96,8 +96,8 @@ if __name__ == '__main__':
     # File paths
     # -------------
 
-    #ykr_fp = r"C:\HY-Data\HENTENKA\Python\MassaAjoNiputus\ShapeFileet\MetropAccess_YKR_grid\MetropAccess_YKR_grid_EurefFIN.shp"
-    ykr_fp = r"C:\HY-Data\HENTENKA\Opetus\2015_GIS_Prosessiautomatisointi\MetropAccess_YKR_grid\MetropAccess_YKR_grid_EurefFIN.shp"
+    ykr_fp = r"C:\HY-Data\HENTENKA\Python\MassaAjoNiputus\ShapeFileet\MetropAccess_YKR_grid\MetropAccess_YKR_grid_EurefFIN.shp"
+    #ykr_fp = r"C:\HY-Data\HENTENKA\Opetus\2015_GIS_Prosessiautomatisointi\MetropAccess_YKR_grid\MetropAccess_YKR_grid_EurefFIN.shp"
     outDir = r"E:\Matriisiajot2015\RESULTS\HelsinkiRegion_TravelCO2Matrix2015"
 
     # --------------
@@ -145,17 +145,17 @@ if __name__ == '__main__':
     # Calculate the fuel consumption into DB
     input_col = 'car_r_dd'
     target_col = 'car_r_fc'
-    fl.calculateFuelConsumptionDB(input_col=input_col, target_col=target_col, fuel_consumption_factor=fuel_consumption)
+    #fl.calculateFuelConsumptionDB(input_col=input_col, target_col=target_col, fuel_consumption_factor=fuel_consumption)
 
     input_col = 'car_m_dd'
     target_col = 'car_m_fc'
-    fl.calculateFuelConsumptionDB(input_col=input_col, target_col=target_col, fuel_consumption_factor=fuel_consumption)
+    #fl.calculateFuelConsumptionDB(input_col=input_col, target_col=target_col, fuel_consumption_factor=fuel_consumption)
 
-    sys.exit()
 
     # Create PostGIS Indices for 'to_id' and 'from_id' to enable fast lookups
     fl.createMatrixIndexes()
 
+    sys.exit()
     # ==============================================================
     # Create process objects ==> Enable multiprocessing in parallel
     # ==============================================================

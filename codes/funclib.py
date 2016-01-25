@@ -265,9 +265,11 @@ class matrixMethods ():
     def createMatrixIndexes(self):
         # Create Index for 'to_id' and 'from_id'
         sql = "CREATE INDEX fromididx ON %s (from_id)" % DATA_TABLE
+        print(sql)
         self.cursor.execute(sql)
         self.conn.commit()
         sql = "CREATE INDEX toididx ON %s (to_id)" % DATA_TABLE
+        print(sql)
         self.cursor.execute(sql)
         self.conn.commit()
 
