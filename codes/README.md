@@ -20,6 +20,6 @@ that makes possible to do processing in parallel utilizing multiple processors o
 - __Analysis steps 1-3__ are run/controlled from __[TravelCO2_Matrix2015_calculator.py](TravelCO2_Matrix2015_calculator.py)__ file.
 - __Analysis steps 4-5__ are run/controlled from __[CO2_Matrix2015_Parse_TextMatrix_from_PostGIS.py](CO2_Matrix2015_Parse_TextMatrix_from_PostGIS.py)__ file.
 
-- __All the main functions__ that are used can be found from __[funclib.py](funclib.py)__.
+- __All the functions__ that are used can be found from __[funclib.py](funclib.py)__.
 - __base.py__ has database connection details that __need to be modified before using the tools__!
 
