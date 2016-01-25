@@ -89,6 +89,13 @@ The estimated fuel consumption per route is calculated with following formula (e
 
 Using the above formula it is also possible to estimate the fuel consumption of routes by using a different fuel consumption factor (here 7.3 liters / 100 km).   
 
+## Licence
+
+Helsinki Region Travel CO2 Matrix 2015 by Accessibility Research Group (University of Helsinki) is licensed under a Creative Commons Attribution 4.0 International License. 
+More information about license: http://creativecommons.org/licenses/by/4.0/
+
+If the datasets are being used extensively in scientific research, we welcome the opportunity for co-authorship of papers. Please contact project leader to discuss about the matter.
+
 ## Codes
 
 1. [Parse CO2 emissions based on Helsinki Region Travel Time Matrix 2015 'raw' data](codes/README.md) 
@@ -99,9 +106,9 @@ at the Department of Geosciences and Geography, University of Helsinki, Finland.
  
 Following people have contributed / are responsible for creating this dataset:
 
+ - [Henrikki Tenkanen](http://blogs.helsinki.fi/accessibility/people_and_contact/) (PhD candidate, contact person regarding the dataset, in charge of the analyses / calculations)
+ - Vuokko Heikinheimo (PhD candidate, car travel distance calculations, documentation)
  - Tuuli Toivonen (PI, leader of the research group)
- - [Henrikki Tenkanen](http://blogs.helsinki.fi/accessibility/people_and_contact/) (PhD candidate, main contact person regarding the dataset, in charge of the analyses / calculations)
- - Vuokko Heikinheimo (PhD candidate, Car travel distance calculations, documentation)  
  
 In addition, we thank [CSC - IT Center for Science](https://www.csc.fi/) for computational resources and help. 
 CSC Taito and cPouta computing clusters were used as our workhorses to calculate the travel times/distances (approx. 1 billion routes were calculated) 
