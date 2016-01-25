@@ -12,7 +12,7 @@ Producing the Helsinki Region Travel CO2 Matrix 2015 included following analysis
  4. Calculating the fuel consumption for car in PostGIS
  5. Parsing the text file product from PostGIS
 
-Analysis steps 1-3 are run/controlled from __[TravelCO2_Matrix2015_calculator.py](TravelCO2_Matrix2015_calculator.py)__ file.
-Analysis steps 4-5 are run/controlled from __[CO2_Matrix2015_Parse_TextMatrix_from_PostGIS.py](CO2_Matrix2015_Parse_TextMatrix_from_PostGIS.py)__ file.
+- __Analysis steps 1-3__ are run/controlled from __[TravelCO2_Matrix2015_calculator.py](TravelCO2_Matrix2015_calculator.py)__ file.
+- __Analysis steps 4-5__ are run/controlled from __[CO2_Matrix2015_Parse_TextMatrix_from_PostGIS.py](CO2_Matrix2015_Parse_TextMatrix_from_PostGIS.py)__ file.
 
-All the main functions that are used can be found from __[funclib.py](funclib.py)__.
+__All the main functions__ that are used can be found from __[funclib.py](funclib.py)__.
