@@ -107,7 +107,7 @@ If the datasets are being used extensively in scientific research, we welcome th
 
 ## <a name="codes"></a>Codes
 
-1. [Parse CO2 emissions based on Helsinki Region Travel Time Matrix 2015 'raw' data](codes/README.md) 
+All the codes and analysis steps that have been used to produce the Helsinki Region Travel CO2 Matrix 2015 are documented separately in [here](codes/README.md). 
 
 ## <a name="contact"></a>Contribution / Contact
 Helsinki Region Travel CO2 Matrix 2015 was created by the [Accessibility Research Group](http://www.helsinki.fi/science/accessibility) 
