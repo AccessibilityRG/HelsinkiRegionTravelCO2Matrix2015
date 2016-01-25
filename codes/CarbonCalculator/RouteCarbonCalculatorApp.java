@@ -44,34 +44,34 @@ public class RouteCarbonCalculatorApp {
         }
 
         String input_file = args[0];
-        System.out.println("Input-tiedosto on " + input_file);
+        System.out.println("Input file: " + input_file);
         File inFile = new File(input_file);
 
         String inputWithoutExtension = input_file.substring(0, input_file.length() - 4);
 
         String output_file = args[1];
-        System.out.println("Output-tiedosto on " + output_file);
+        //System.out.println("Output-tiedosto on " + output_file);
 
         //String error_file = inputWithoutExtension + ".ERRORS.csv";
         String error_file = args[2];
-        System.out.println("Error-tiedosto on " + error_file);
+        //System.out.println("Error-tiedosto on " + error_file);
 
         String ttFileName = args[3];
-        System.out.println("ttFile on " + ttFileName);
+        //System.out.println("ttFile on " + ttFileName);
 
         PrintWriter outFile = new PrintWriter(new FileWriter(output_file));
         PrintWriter errFile = new PrintWriter(new FileWriter(error_file));
 
         PrintWriter ttFile = new PrintWriter(new FileWriter(ttFileName));
 
-        System.out.println("Luodaan tunnistustaulukko.");
+        //System.out.println("Luodaan tunnistustaulukko.");
         tunnistusTaulukko = createRouteHash(inFile);
 
         ttFile.close();
 
         Scanner s = new Scanner(new BufferedReader(new FileReader(inFile)));
 
-        System.out.println("Aloitetaan input-tiedoston luku.");
+        //System.out.println("Aloitetaan input-tiedoston luku.");
 
         outFile.print("RouteID;");
         outFile.print("from_id;");
