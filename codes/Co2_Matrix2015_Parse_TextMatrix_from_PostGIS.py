@@ -1,11 +1,3 @@
-import pandas as pd
-import geopandas as gpd
-import numpy as np
-import os, sys
-import funclib
-from base import DATA_TABLE
-import multiprocessing
-
 """
    Copyright (C) 2016  Accessibility Research Group (Tenkanen).
    Developer: Henrikki Tenkanen, University of Helsinki, Finland.
@@ -33,6 +25,14 @@ import multiprocessing
    More information about license: http://creativecommons.org/licenses/by/4.0/
 
    """
+
+import pandas as pd
+import geopandas as gpd
+import numpy as np
+import os, sys
+import funclib
+from base import DATA_TABLE
+import multiprocessing
 
 class co2TextMatrixCreator ():
 

@@ -1,4 +1,21 @@
-__author__ = 'hentenka'
+"""
+   Copyright (C) 2016  Accessibility Research Group (Tenkanen).
+   Developer: Henrikki Tenkanen, University of Helsinki, Finland.
+
+   These classes are used to create the Helsinki Region Travel CO2 Matrix 2015 text-file version.
+
+   Functionalities are controlled and used from two files:
+    - TravelCO2_Matrix2015_calculator.py
+    - Co2_Matrix2015_Parse_TextMatrix_from_PostGIS
+
+   --------------
+   License:
+   --------------
+   CO2_Matrix2015_Parse_TextMatrix_from_PostGIS.py by Accessibility Research Group (University of Helsinki) is licensed under a Creative Commons Attribution 4.0 International License.
+   More information about license: http://creativecommons.org/licenses/by/4.0/
+
+   """
+
 import os, sys
 import subprocess
 import numpy as np
