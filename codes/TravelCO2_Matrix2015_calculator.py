@@ -181,8 +181,8 @@ if __name__ == '__main__':
     # ========
 
     # Set up start-end indices
-    start_idx = 136 #121
-    end_idx = 180
+    start_idx = 0
+    end_idx = 97
 
     o1 = co2MatrixCreator(fl=fl, threadID="%s_%s", start_index=start_idx, end_index=end_idx,
                           pt_r_dir=pt_08_dir, pt_m_dir=pt_12_dir, pt_r_co2_dir=pt_08_co2_dir, pt_m_co2_dir=pt_12_co2_dir,
@@ -193,8 +193,8 @@ if __name__ == '__main__':
     # ========
 
     # Set up start-end indices
-    start_idx = 194 #180
-    end_idx = 220
+    start_idx = 97
+    end_idx = 194
 
     o2 = co2MatrixCreator(fl=fl, threadID="%s_%s", start_index=start_idx, end_index=end_idx,
                                 pt_r_dir=pt_08_dir, pt_m_dir=pt_12_dir, pt_r_co2_dir=pt_08_co2_dir, pt_m_co2_dir=pt_12_co2_dir,
@@ -204,7 +204,7 @@ if __name__ == '__main__':
     # ========
 
     # Set up start-end indices
-    start_idx = 234 #220
+    start_idx = 194
     end_idx = 293
 
     o3 = co2MatrixCreator(fl=fl, threadID="%s_%s", start_index=start_idx, end_index=end_idx,
