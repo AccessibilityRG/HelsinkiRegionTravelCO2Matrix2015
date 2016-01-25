@@ -22,9 +22,6 @@ grid cells in the YKR (yhdyskuntarakenteen seurantajärjestelmä) data set produ
 The CO2 emissions are calculated based on the distance that is travelled with different travel modes (private car & PT) on a individual route multiplied with a specific carbon emission factors.
 Carbon emission factors are based on the same estimates that Helsinki Region Transport (HRT) uses in their [Journey Planner service](http://www.reittiopas.fi/en/), more info [here](http://www.hsljalki.fi/en/menu/info).
 Public transportation emissions are a sum of emissions based on bus, tram, metro, ferry and train.
-Final CO2 emission for public transport and car are calculated separately with function:
-    
-    Distance(km) * carbonEmissionFactor
    
 Dataset is openly available for everyone for free and it can be downloaded from the [Accessibility Research Group website](http://www.helsinki.fi/science/accessibility/data) (under a Creative Commons 4.0 Licence).
 
@@ -68,7 +65,9 @@ Travel distances for each route are calculated using specific accessibility GIS 
 
 In the CO2 calculations, the travel distances by public transportation includes all trip legs that are done with any vehicle (i.e. bus, train, metro, tram, ferry), thus walking is excluded. 
 CO2 values for each trip leg and for each transport mode are calculated separately and then summed together. As Helsinki Region Public Transport is mainly CO2 free, __the only transport modes
-that actually causes CO2 emissions are bus (73 g/km) and ferry (389 g/km)__. 
+that actually causes CO2 emissions are bus (73 g/km) and ferry (389 g/km)__. Final CO2 emission for public transport and car are calculated separately with function:
+    
+    Distance(km) * carbonEmissionFactor
  
 Travel distances by private car takes into account the actual driving distance between origin and destination location 
 and the distance that it approximately takes to find a parking place at the destination. __Carbon emission factor for private car is 171 g/km__.   
