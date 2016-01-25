@@ -3,7 +3,16 @@
 This repository demonstrates / documents how [Helsinki Region Travel CO2 Matrix 2015](http://www.helsinki.fi/science/accessibility/data) is calculated. 
 Dataset was produced by [Accessibility Research Group](http://www.helsinki.fi/science/accessibilty), University of Helsinki.
 
-## What is Helsinki Region Travel CO2 Matrix 2015
+Contents:
+
+- [What is Helsinki Region Travel CO2 Matrix 2015?](#what-is)
+- [Attributes of Helsinki Region Travel CO2 Matrix 2015](#attributes)
+- [Attributes of Helsinki Region Travel CO2 Matrix 2015](#calculations)
+- [Licence](#license)
+- [Codes](#codes)
+- [Contribution / Contact](#contact)
+
+## <a name="what-is"></a>What is Helsinki Region Travel CO2 Matrix 2015?
  
 [__Helsinki Region Travel CO2 Matrix 2015__](http://www.helsinki.fi/science/accessibility/data) is a dataset that contains CO2 emissions (+some additional attributes) produced by public transportation (PT) and private car
 for routes between all 250 m x 250 m grid cell centroids (n = 13231) in the Capital Region of Helsinki. Calculations were done separately for two different time of the day using 
@@ -30,7 +39,7 @@ Modelling library patronage patterns and their related CO2-emissions](http://www
 
 - Salonen, M. & Toivonen, T. (2013). [Modelling travel time in urban networks: comparable measures for private car and public transport.](http://www.sciencedirect.com/science/article/pii/S096669231300121X) Journal of Transport Geography 31, 143–153.
 
-## Attributes of Helsinki Region Travel CO2 Matrix 2015
+## <a name="attributes"></a>Attributes of Helsinki Region Travel CO2 Matrix 2015
 
 | Attribute | Definition |
 | --------- | ---------- | 
@@ -50,7 +59,7 @@ Modelling library patronage patterns and their related CO2-emissions](http://www
 | car_r_fc  | Estimated fuel consumption by car in midday traffic |
 
  
-## How calculations were done?
+## <a name="calculations"></a>How calculations were done?
 
 CO2 and fuel consumption calculations are based on travel distances by different transport modes that are multiplied by [carbon emission factors or fuel consumption estimates](http://www.hsljalki.fi/en/menu/info). 
 Travel distances for each route are calculated using specific accessibility GIS tools called __[MetropAccess-Reititin](http://blogs.helsinki.fi/accessibility/reititin/)__ and __[MetropAccess-Digiroad](http://blogs.helsinki.fi/accessibility/digiroad-tool/)__ that are developed and maintained by Accessibility Research Group, Uni. Helsinki. 
@@ -89,18 +98,18 @@ The estimated fuel consumption per route is calculated with following formula (e
 
 Using the above formula it is also possible to estimate the fuel consumption of routes by using a different fuel consumption factor (here 7.3 liters / 100 km).   
 
-## Licence
+## <a name="license"></a>Licence
 
 Helsinki Region Travel CO2 Matrix 2015 by Accessibility Research Group (University of Helsinki) is licensed under a Creative Commons Attribution 4.0 International License. 
 More information about license: http://creativecommons.org/licenses/by/4.0/
 
 If the datasets are being used extensively in scientific research, we welcome the opportunity for co-authorship of papers. Please contact project leader to discuss about the matter.
 
-## Codes
+## <a name="codes"></a>Codes
 
 1. [Parse CO2 emissions based on Helsinki Region Travel Time Matrix 2015 'raw' data](codes/README.md) 
 
-## Contribution / Contact
+## <a name="contact"></a>Contribution / Contact
 Helsinki Region Travel CO2 Matrix 2015 was created by the [Accessibility Research Group](http://www.helsinki.fi/science/accessibility) 
 at the Department of Geosciences and Geography, University of Helsinki, Finland.
  
