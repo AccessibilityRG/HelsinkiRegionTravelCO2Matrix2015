@@ -42,16 +42,16 @@ Modelling library patronage patterns and their related CO2-emissions](http://www
 | --------- | ---------- | 
 | from_id   | ID number of the origin grid cell |
 | to_id     | ID number of the destination grid cell |
-| pt_r_co2  | CO2 emissions of the route by public transportation in rush hour traffic | 
+| pt_r_co2  | CO2 emissions (in grams) of the route by public transportation in rush hour traffic | 
 | pt_r_dd   | Distance of the route travelled by any public transportation vehicle in rush hour traffic | 
 | pt_r_l    | Number of lines used on the route by public transportation in rush hour traffic |
-| pt_m_co2  | CO2 emissions of the route by public transportation in midday traffic |
+| pt_m_co2  | CO2 emissions (in grams) of the route by public transportation in midday traffic |
 | pt_m_dd   | Distance of the route travelled by any public transportation vehicle in midday traffic | 
 | pt_r_l    | Number of lines used on the route by public transportation in midday traffic |
-| car_r_co2 | CO2 emissions of the route by private car in rush hour traffic |
+| car_r_co2 | CO2 emissions (in grams) of the route by private car in rush hour traffic |
 | car_r_dd  | Distance driven by car during in rush hour traffic |
 | car_r_fc  | Estimated fuel consumption by car during in rush hour traffic |
-| car_r_co2 | CO2 emissions of the route by private car in midday traffic |
+| car_r_co2 | CO2 emissions (in grams) of the route by private car in midday traffic |
 | car_r_dd  | Distance driven by car in midday traffic |
 | car_r_fc  | Estimated fuel consumption by car in midday traffic |
 
