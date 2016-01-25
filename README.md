@@ -7,7 +7,7 @@ __Contents:__
 
 - [What is Helsinki Region Travel CO2 Matrix 2015?](#what-is)
 - [Attributes of Helsinki Region Travel CO2 Matrix 2015](#attributes)
-- [Attributes of Helsinki Region Travel CO2 Matrix 2015](#calculations)
+- [How calculations were done?](#calculations)
 - [Licence](#license)
 - [Codes](#codes)
 - [Contribution / Contact](#contact)
