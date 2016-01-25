@@ -155,6 +155,20 @@ class matrixMethods ():
         print("Error: Could not find corresponding target_file for %s in %s" % (Source_ID, search_folder))
         sys.exit()
 
+    def pullDataFromDB(self, to_id):
+        # Get unique 'to_id' values from the db
+        sql = """SELECT * FROM %s
+                  WHERE to_id = %s;""" % (DATA_TABLE, to_id)
+        # Read data into DataFrame
+        data = pd.read_sql_query(sql, self.engine)
+
+        return data
+
+
+    def floatToStr(self, row, column):
+        row[column] = str(np.round(row[column], 2))
+        return row
+
     def runRouteCarbonCalculator(self, src_file, path_to_carbon_calc, time):
         if time.lower() in ['08', '8', 'r']:
             # Target paths
