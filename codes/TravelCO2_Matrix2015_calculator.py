@@ -64,6 +64,9 @@ def createCO2Matrix(objInstance):
     start_idx = objInstance.start_index
     end_idx = objInstance.end_index
 
+    # Create Table if it does not exist
+    fl.createTableIfNotExist()
+
     # ----------------------------
     # Start processing the files
     # ----------------------------
@@ -88,20 +91,20 @@ def createCO2Matrix(objInstance):
 
 
             # Calculate CO2 emissions for PT using RouteCarbonCalculator (Java application)
-            # pt_08_co2file = fl.runRouteCarbonCalculator(src_file=ptfp08, path_to_carbon_calc=objInstance.co2_calculator_path, time='08')
-            # pt_12_co2file = fl.runRouteCarbonCalculator(src_file=ptfp12, path_to_carbon_calc=objInstance.co2_calculator_path, time='12')
+            pt_08_co2file = fl.runRouteCarbonCalculator(src_file=ptfp08, path_to_carbon_calc=objInstance.co2_calculator_path, time='08')
+            pt_12_co2file = fl.runRouteCarbonCalculator(src_file=ptfp12, path_to_carbon_calc=objInstance.co2_calculator_path, time='12')
 
-            # Get File paths
-            pt_08_co2file = fl.getCO2File(travel_mode="pt", time='08')
-            pt_12_co2file = fl.getCO2File(travel_mode="pt", time='12')
+            # Get File paths - This method can be used if calculations have been done already earlier
+            #pt_08_co2file = fl.getCO2File(travel_mode="pt", time='08')
+            #pt_12_co2file = fl.getCO2File(travel_mode="pt", time='12')
 
             # Calculate the CO2 results for Car
-            #car_08_co2file = fl.calculateCarCO2emissions(src_file=carfp08, time='08')
-            #car_12_co2file = fl.calculateCarCO2emissions(src_file=carfp12, time='12')
+            car_08_co2file = fl.calculateCarCO2emissions(src_file=carfp08, time='08')
+            car_12_co2file = fl.calculateCarCO2emissions(src_file=carfp12, time='12')
 
-            # Get File paths
-            car_08_co2file = fl.getCO2File(travel_mode="car", time='08')
-            car_12_co2file = fl.getCO2File(travel_mode="car", time='12')
+            # Get File paths - This method can be used if calculations have been done already earlier
+            #car_08_co2file = fl.getCO2File(travel_mode="car", time='08')
+            #car_12_co2file = fl.getCO2File(travel_mode="car", time='12')
 
             # -----------------------------------------
             # Combine datasets into a single DataFrame
@@ -133,9 +136,6 @@ def createCO2Matrix(objInstance):
 
             # Create DB engine
             engine = fl.create_DB_engine()
-
-            # Create Table if it does not exist
-            #fl.createTableIfNotExist()
 
             # ---------------------------------
             # Push CO2 data to PostGIS
