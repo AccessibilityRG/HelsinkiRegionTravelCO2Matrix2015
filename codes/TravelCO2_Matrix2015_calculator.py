@@ -3,7 +3,11 @@ import funclib
 from base import DATA_TABLE
 import multiprocessing
 
-"""This script parses Helsinki Region Travel CO2 Matrix 2015 and pushes it to PostGIS Table.
+"""
+   Copyright (C) 2016  Accessibility Research Group (Tenkanen).
+   Developer: Henrikki Tenkanen, University of Helsinki, Finland.
+
+   This script parses Helsinki Region Travel CO2 Matrix 2015 and pushes it to PostGIS Table.
    A specific Java application called RouteCarbonCalculator (programmed by Jaani Lahtinen, modified by Henrikki Tenkanen),
    and specific Python functionalities (found in funclib.py) are used to create the CO2 matrix.
 
@@ -18,6 +22,12 @@ import multiprocessing
    3. Move Carbon files to a new dedicated location on a disk
    4. Combine PT and Car results
    5. Push Carbon files to PostGIS
+
+   --------------
+   License:
+   --------------
+   TravelCO2_Matrix2015_calculator.py by Accessibility Research Group (University of Helsinki) is licensed under a Creative Commons Attribution 4.0 International License.
+   More information about license: http://creativecommons.org/licenses/by/4.0/
 
    """
 

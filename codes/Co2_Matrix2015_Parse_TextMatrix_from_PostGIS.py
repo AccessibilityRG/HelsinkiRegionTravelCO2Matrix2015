@@ -6,7 +6,11 @@ import funclib
 from base import DATA_TABLE
 import multiprocessing
 
-"""This script creates Helsinki Region Travel CO2 Matrix 2015 text-file version.
+"""
+   Copyright (C) 2016  Accessibility Research Group (Tenkanen).
+   Developer: Henrikki Tenkanen, University of Helsinki, Finland.
+
+   This script creates Helsinki Region Travel CO2 Matrix 2015 text-file version.
    Data is pulled from PostGIS table that was created using TravelCO2_Matrix2015_calculator.py script.
 
    Multiprocessing is enabled: You can initialize multiple threads and run them simultaneously.
@@ -21,6 +25,12 @@ import multiprocessing
    4. Select data (i.e. 'from_id's) that matches with YKR grid IDs
        ==> There were extra cells calculated around Helsinki Region to decrease border error)
    5. Write the data into a text-file (e.g. 'travel_co2_to_5789456.txt')
+
+   --------------
+   License:
+   --------------
+   CO2_Matrix2015_Parse_TextMatrix_from_PostGIS.py by Accessibility Research Group (University of Helsinki) is licensed under a Creative Commons Attribution 4.0 International License.
+   More information about license: http://creativecommons.org/licenses/by/4.0/
 
    """
 
