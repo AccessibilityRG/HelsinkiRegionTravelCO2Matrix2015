@@ -27,7 +27,7 @@ Dataset is openly available for everyone for free and it can be downloaded from 
 
 Helsinki Region CO2 Matrix 2015 is closely related to __[Helsinki Region Travel Time Matrix 2015](http://blogs.helsinki.fi/saavutettavuus/paakaupunkiseudun-matka-aikamatriisi-2015/)__ 
 that is also produced by Accessibility Research Group. 
-More information how the Helsinki Region Travel Time Matrix 2015 was calculated can be found [here](). 
+More information how the Helsinki Region Travel Time Matrix 2015 was calculated can be found [here](https://github.com/AccessibilityRG/HelsinkiRegionTravelTimeMatrix2015). 
  
 __Scientific examples__ of the approach used here can be read from the following articles:
 
