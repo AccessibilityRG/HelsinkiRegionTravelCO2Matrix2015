@@ -23,3 +23,5 @@ For example:
 
  - [RouteCarbonCalculator.java](RouteCarbonCalculator.java) is a class that calculates the CO2 emissions by parsing the travel distances of each transport mode and multiplying it with corresponding carbon emission factor.
     - Static variables *busCO2*, *tramCO2*, *trainCO2*, *metroCO2*, *ferryCO2* can be used to pass the CO2 emissions for each travel mode separately   
+ - [RouteCarbonCalculatorApp.java](RouteCarbonCalculatorApp.java) is a class that handles the input parameters etc. (entry point for the tool)
+ - __RouteCarbonCalculator.jar__ is a built version of the Java tool  
