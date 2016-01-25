@@ -14,7 +14,7 @@ Base = declarative_base()
 
 class matrixMethods ():
 
-    def __init__(self, pt_r_dir="", pt_m_dir="", car_r_dir="", car_m_dir="", pt_r_co2_dir="", pt_m_co2_dir="", car_r_co2_dir="", car_m_co2_dir="", co2_calculator_path="", matrix_dir="", ykr_grid=""):
+    def __init__(self, pt_r_dir="", pt_m_dir="", car_r_dir="", car_m_dir="", pt_r_co2_dir="", pt_m_co2_dir="", car_r_co2_dir="", car_m_co2_dir="", co2_calculator_path="", matrix_dir="", ykr_grid="", ykr_grid_fp=""):
         # File paths
         self.pt_r_dir = pt_r_dir
         self.pt_m_dir = pt_m_dir
@@ -27,6 +27,7 @@ class matrixMethods ():
         self.co2_calculator_path = co2_calculator_path
         self.matrix_dir = matrix_dir
         self.ykr_grid = ykr_grid
+        self.ykr_grid_fp = ykr_grid_fp
 
         # Database connection
         self.conn = None

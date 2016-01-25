@@ -26,7 +26,7 @@ import multiprocessing
 
 class co2TextMatrixCreator ():
 
-    def __init__(self, fl, threadID, start_index, end_index, ykr_grid_df, ykr_grid_fp, output_co2_dir):
+    def __init__(self, fl="", threadID="", start_index="", end_index="", ykr_grid_df="", ykr_grid_fp="", output_co2_dir=""):
         self.fl = fl
         self.threadID = threadID
         self.start_index = start_index
@@ -101,7 +101,7 @@ def createCO2TextMatrix(obj):
             outname = "travel_co2_to_%s.txt" % to_id
             # Outputpath
             outfile = os.path.join(targetDir, outname)
-            print("Saving results to: %s\n" % outfile)
+            #print("Saving results to: %s\n" % outfile)
             # Write results to disk
             data.to_csv(outfile, sep=';', index=False, mode='w', float_format="%.0f")
 
@@ -174,47 +174,55 @@ if __name__ == '__main__':
     # NOTICE!
     # You should take care that there is sufficiently memory (RAM) in your computer.
     # Creating too many processes may exceed your memory limit and produce a memory error.
-    # At least 5 processes can be used without problems with computer that has 16GB of RAM.
+    # At least 3 processes can be used without problems with computer that has 16GB of RAM.
 
     # Process1
     # =======
     # Set up start-end indices
     start_idx = 0
-    end_idx = 50
+    end_idx = 2205
     o1 = co2TextMatrixCreator(fl=fl, threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_fp=ykr_fp, output_co2_dir=outDir)
 
     # Process2
     # =======
     # Set up start-end indices
-    start_idx = 50
-    end_idx = 100
+    start_idx = 2205
+    end_idx = 4410
     o2 = co2TextMatrixCreator(fl=fl, threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_fp=ykr_fp, output_co2_dir=outDir)
 
     # Process3
     # =======
     # Set up start-end indices
-    start_idx = 150
-    end_idx = 200
+    start_idx = 4410
+    end_idx = 6615
     o3 = co2TextMatrixCreator(fl=fl, threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_fp=ykr_fp, output_co2_dir=outDir)
 
     # Process4
     # =======
     # Set up start-end indices
-    start_idx = 200
-    end_idx = 250
+    start_idx = 6615
+    end_idx = 8820
     o4 = co2TextMatrixCreator(fl=fl, threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_fp=ykr_fp, output_co2_dir=outDir)
 
     # Process5
     # =======
     # Set up start-end indices
-    start_idx = 250
-    end_idx = 293
+    start_idx = 8820
+    end_idx = 11025
     o5 = co2TextMatrixCreator(fl=fl, threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_fp=ykr_fp, output_co2_dir=outDir)
+
+    # Process6
+    # =======
+    # Set up start-end indices
+    start_idx = 11025
+    end_idx = 13232
+    o6 = co2TextMatrixCreator(fl=fl, threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_fp=ykr_fp, output_co2_dir=outDir)
 
     # --------------------------------------------------------
     # Run the processes in parallel using multiprocessing.Pool
     # --------------------------------------------------------
-    objList = [o1, o2, o2, o3, o4, o5]
+    objList = [o1, o2, o3]
+    #objList = [o4, o5, o6]
 
     print("%s parallel processes created." % len(objList))
 
