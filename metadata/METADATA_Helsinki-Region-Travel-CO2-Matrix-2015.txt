@@ -1,0 +1,432 @@
+=============================================
+ Helsinki Region Travel CO2 Matrix 2015
+=============================================
+
+Last modified 26.1.2016.
+
+(Suomenkielinen kuvaus alempana)
+
+-----------------
+DATA DESCRIPTION
+-----------------
+
+Helsinki Region Travel CO2 Matrix 2015 is a dataset that contains CO2 emissions and travelled distances (using any vehicle)
+by public transportation (PT) and private car for routes between all 250 m x 250 m grid cell centroids (n = 13231) in the 
+Capital Region of Helsinki. In addition, the dataset presents fuel consumption of a car (liters / vehicle) and the number of PT lines 
+that it requires to take on a specific route. CO2 emissions are presented as grams per passenger (PT) or grams per vehicle (private 
+car with 1 passenger). Calculations were done separately for two different time of the day using rush hour (08:00-09:00) and midday 
+(12:00-13:00) schedules/traffic conditions. The grid cells are compatible with the statistical grid cells in the YKR (yhdyskuntarakenteen
+seurantajärjestelmä) data set produced by the Finnish Environment Institute (SYKE).
+
+The CO2 emissions are calculated based on the distance that is travelled with different travel modes (private car & PT) on a individual
+route multiplied with a specific carbon emission factors. Carbon emission factors are based on the same estimates that Helsinki Region 
+Transport (HRT) uses in their Journey Planner service (more info from: http://www.hsljalki.fi/en/menu/info).
+Public transportation emissions are a sum of emissions based on bus, tram, metro, ferry and train.
+
+Helsinki Region Travel CO2 Matrix 2015 is closely related to Helsinki Region Travel Time Matrix 2015 that is also produced by 
+Accessibility Research Group. 
+
+Data has been produced by the Accessibility Research Group (2010-2016, http://www.helsinki.fi/science/accessibility/),
+at the Department of Geosciences and Geography, University of Helsinki. Calculations were done using CSC - IT Center for
+Science cosmputing resources.
+
+The data may be used freely (under a Creative Commons 4.0 Licence, see the licence text below). We do not take any responsibility for any
+mistakes, errors or other deficiencies in the data.
+
+--------------
+DATA STRUCTURE
+--------------
+
+The data have been divided into 13231 text files according to destinations of the routes. One file 
+includes the routes from all YKR grid cells to a particular destination grid cell. All files have been named
+according to the destination grid cell code and each file includes 13231 rows.
+
+
+Each file consists of 14 attribute fields: 1) from_id, 2) to_id, 3) pt_r_co2, 4) pt_r_dd, 5) pt_r_l, 6) pt_m_co2, 7) pt_m_dd, 8) pt_m_l, 
+9) car_r_co2, 10) car_r_dd, 11) car_r_fc, 12) car_m_co2, 13) car_m_dd, 14) car_m_fc  
+
+The fields are separated by semicolon in the text files.
+
+
+Abbreviations in the field names:
+___________________________________________________________________
+pt   | public transport 
+car  | car
+r    | rush hour
+m    | midday
+dd   | driven distance
+co2  | CO2 emissions (grams)
+l    | Number of lines used on the route by public transportation
+fc   | Estimated fuel consumption (liters) by car
+-------------------------------------------------------------------
+
+All fields are explained below:
+____________________________________________________________________________________________________________________________
+from_id   |  ID number of the origin grid cell
+to_id  	  |  ID number of the destination grid cell
+pt_r_co2  |  CO2 emissions (grams/passenger) of the route by public transportation in rush hour traffic
+pt_r_dd   |  Distance (meters) of the route travelled by any public transportation vehicle in rush hour traffic
+pt_r_l 	  |  Number of lines used on the route by public transportation in rush hour traffic
+pt_m_co2  |  CO2 emissions (grams/passenger) of the route by public transportation in midday traffic
+pt_m_dd   |  Distance (meters) of the route travelled by any public transportation vehicle in midday traffic
+pt_m_l    |  Number of lines used on the route by public transportation in midday traffic
+car_r_co2 |  CO2 emissions (grams/vehicle) of the route by private car in rush hour traffic
+car_r_dd  |  Distance (meters) driven by car during in rush hour traffic
+car_r_fc  |  Estimated fuel consumption (liters) by car during in rush hour traffic
+car_m_co2 |  CO2 emissions (grams/vehicle) of the route by private car in midday traffic
+car_m_dd  |  Distance (meters) driven by car in midday traffic
+car_m_fc  |  Estimated fuel consumption (liters) by car in midday traffic
+----------------------------------------------------------------------------------------------------------------------------
+
+NODATA values have been described with value -1. 
+
+-----------------
+METHODS
+-----------------
+
+The routes by PUBLIC TRANSPORATION have been calculated by using the MetropAccess-Reititin tool which also takes into account the whole travel chains from the origin to the destination. 
+In CO2 calculations only trip legs that the passenger travels with any vehicle are taken into account:
+(1) travel distance to next transit stop, 
+(*) possible transport mode change, 
+(2) travel distance to next transit stop
+
+Travel distance calculations by public transportation have been optimized by using 10 different departure times within the calculation hour using so called Golomb ruler. 
+The fastest route from these calculations are selected for the final travel CO2 matrix.
+
+Calculations of Helsinki Region Travel CO2 Matrix 2015 are based on schedules of Monday 28.09.2015:
+1) Midday (optimized between 12:00-13:00 ) 
+2) Rush hour (optimized between 08:00-09:00)
+
+The routes by CAR have been calculated in ArcGIS 10.2 software by using the OD Cost Matrix tool in the Network Analyst toolkit. MetropAccess-Digiroad (modified from the original Digiroad data
+provided by Finnish Transport Agency) has been used as Network Dataset in which the route selection/optimization are made more realistic by adding crossroad impedances for different road classes. 
+The calculations have been repeated for two times of the day using 1) the "midday impedance" (i.e. travel times outside rush hour) and 2) the "rush hour impendance" as impedance in the calculations.
+
+All trip legs where car is used are taken into account in the calculations: 
+(1) travel distance from parking lot to destination, 
+(2) average travel distance for searching a parking lot, 
+
+All calculations were done using the computing resources of CSC-IT Center for Science (https://www.csc.fi/home).
+
+-----------------
+CO2 CALCULATIONS
+-----------------
+
+In the CO2 calculations, the travel distances by public transportation includes all trip legs that are done with any vehicle (i.e. bus, train, metro, tram, ferry), thus walking is excluded.
+CO2 values for each trip leg and for each transport mode are calculated separately and then summed together. As Helsinki Region Public Transport is mainly CO2 free, the only transport 
+modes that actually causes CO2 emissions are bus (73 g/km) and ferry (389 g/km). The number of passengers on buses is estimated to be on average 13 passengers per bus. Final CO2 emission
+for public transport and car are calculated separately with function:
+
+  Distance(km) * carbonEmissionFactor
+
+Travel distances by private car takes into account the actual driving distance between origin and destination location and the distance that it approximately takes to find a parking place at
+the destination. Carbon emission factor for private car is 171 g/km.
+
+------------------------------
+FUEL CONSUMPTION CALCULATIONS
+------------------------------
+
+Fuel consumption calculations (for private car) are also based on driving distance between origin and destination locations plus additional
+distance that it takes to find a parking place (i.e. a single route).
+
+Average fuel consumption of a car is depending on various factors such as:
+
+- age and size of the car
+- fuel that is used (petrol vs diesel)
+- weather conditions (summer vs winter)
+- traffic conditions (city center vs rural highway)
+
+Thus, it is rather impossible to calculate "accurate" and static fuel consumption for a car, let alone for all cars in Helsinki Region. Hence, the average fuel consumption used in the matrix
+is a compromise and a heavily simplified measure. Fuel consumption for all cars is estimated as 7.3 liters per 100 kilometers that is the average fuel consumption of all different sizes of cars
+(small, midsize, large), and all different ages of cars (0-5 years, 6-10 years, 10+ years), and all cars using either petrol or diesel as fuel. Fuel consumption estimates were retrieved from the
+table that is used by HRT to calculate the CO2 emissions. The fuel consumption estimates are based on the LIPASTO calculation system of the Technical Research Centre of Finland (VTT).
+
+The estimated fuel consumption per route is calculated with following formula (example for rush hour fuel consumption):
+
+  (car_r_dd / 100000.0) * 7.3
+
+Using the above formula it is also possible to estimate the fuel consumption of routes by using a different fuel consumption factor (here 7.3 liters / 100 km).
+
+
+--------------
+CONTIRIBUTIONS 
+--------------
+
+The following people participated in the development of the data set (in aplhabetical order)
+
+- Vuokko Heikinheimo, dataset production and documentation
+- Timo Jaakkola, development of the travel time model for private cars.
+- Juha Järvi, BusFaster Ltd, programming and design of the MetropAccess-Reitin, used in publid transportation and walk calculations
+- Jaani Lahtinen, Gispositio Oy, programming and design of CO2-calculator (RouteCarbonCalculator.jar)
+- Maria Salonen, project manager, participation in all steps
+- Henrikki Tenkanen, project manager, participation in all steps
+- Tuuli Toivonen, project leader, participation in all steps
+
+Additionally Perttu Saarsalmi and Sakari Jäppinen have contributed and provided valuable comments on developing the tools/datasets. 
+
+Three data resources were used for the calculations: 
+- Digiroad - A National Road and Street Database (Copyright Liikennevirasto/Digiroad 2014) (base for the private car modeling)
+- Journey Planner Kalkati.net XML data by Helsinki Regional Transport Authority (HSL) (base for public transportation modeling)
+- Open Street Map (base for walk modeling) 
+
+The work was funded by KatuMetro research programme and the University of Helsinki during 2010-2016. 
+
+
+-------------------
+CITATION PRACTICES
+-------------------
+
+If you use Helsinki Region-Travel Time Matrix 2015 dataset or related tools in your work, we encourage you to cite properly to our work.
+
+You can cite to our work as follows:
+
+Data/Tools description:
+Toivonen, T., M. Salonen, H. Tenkanen, P. Saarsalmi, T. Jaakkola & J. Järvi (2014). Joukkoliikenteellä, autolla ja kävellen: Avoin saavutettavuusaineisto pääkaupunkiseudulla. Terra 126: 3, 127-136. 
+
+DOI name for the dataset:
+Toivonen, T., H. Tenkanen, V. Heikinheimo, T. Jaakkola, J. Järvi & M. Salonen (2016). Helsinki Region Travel CO2 Matrix 2015. DOI: 10.13140/RG.2.1.2601.0648
+
+
+---------------------------------------------------------------------
+EXAMPLES OF ARTICLES IN WHICH OUR ACCESSIBILITY TOOLS HAVE BEEN USED
+---------------------------------------------------------------------
+
+Laatikainen, T., H. Tenkanen, M. Kyttä & T. Toivonen (2015). Comparing conventional and PPGIS approaches in measuring equality of access to urban aquatic environments. Landscape and Urban Planning 144, 22–33.
+
+Toivonen, T., M. Salonen, H. Tenkanen, P. Saarsalmi, T. Jaakkola & J. Järvi (2014). Joukkoliikenteellä, autolla ja kävellen: Avoin saavutettavuusaineisto pääkaupunkiseudulla. Terra 126: 3, 127-136. 
+
+Salonen, M. & Toivonen, T. (2013). Modelling travel time in urban networks: comparable measures for private car and public transport. Journal of Transport Geography 31, 143–153.
+
+Jaakkola, T. (2013). Paikkatietopohjainen menetelmä autoilun ajoaikojen ja kokonaismatka-aikojen mallintamiseen – esimerkkinä pääkaupunkiseutu. Pro gradu -tutkielma. Helsingin yliopisto. 
+Geotieteiden ja maantieteen laitos.
+
+Lahtinen, J., Salonen, M. & Toivonen, T. (2013). Facility allocation strategies and the sustainability of service delivery: Modelling library patronage patterns and their related CO2-emissions. Applied Geography 44, 43-52.
+
+Salonen, M., Toivonen, T. & Vaattovaara, M. (2012). Arkiliikkumisen vaihtoehdoista monikeskuksistuvassa metropolissa: Kaksi näkökulmaa palvelujen saavutettavuuteen pääkaupunkiseudulla.
+Yhdyskuntasuunnittelu 3/2012
+
+Jäppinen,  S., Toivonen, T. & Salonen, M. (2013). Modelling the potential effect of shared bicycles on public transport travel times in Greater Helsinki: An open data approach. Applied Geography 43, 13-24.
+
+
+---------
+LICENSE
+---------
+
+Helsinki Region Travel CO2 Matrix 2015 by Accessibility Research Group / MetropAccess-project (University of Helsinki) is licensed under a Creative Commons Attribution 4.0 International License. 
+More information about license: http://creativecommons.org/licenses/by/4.0/
+
+If the datasets are being used extensively in scientific research, we welcome the opportunity for co-authorship of papers. Please contact project leader to discuss about the matter.
+
+
+============================================================================================================================================================================================================
+============================================================================================================================================================================================================
+
+SUOMEKSI.
+
+=============================================
+ Pääkaupunkiseudun Matka-CO2 Matriisi 2015
+=============================================
+
+Viimeksi päivitetty 26.1.2016
+
+-------------
+YLEISKUVAUS
+-------------
+
+Aineisto käsittää tiedot liikkumisesta aiheutuvista hiilidioksidipäästöistä (CO2) ja kulkuneuvolla ajetuista matkan pituuksista (metreissä) joukkoliikenteellä ja henkilöautolla
+kaikista pääkaupunkiseudun YKR-ruuduista (13 231 kpl) kaikkiin pääkaupunkiseudun YKR-ruutuihin (13 231 kpl). Näiden lisäksi aineistossa kuvataan reitillä käytettyjen joukkoliikennelinjojen 
+lukumäärä yhteensä (vaihtojen lukumäärä) ja henkilöauton arvioitu polttoaineenkulutus kulkureitillä. Tulokset on laskettu ruutujen keskipisteistä kahtena eri vuorokaudenaikana:
+ 1) keskipäivällä ja 2) ruuhka aikaan. 
+
+Matkojen hiilidioksidipäästöt perustuvat kulkuneuvolla ajetun matkanpituuteen, joka on kerrottu kyseisen kulkuneuvon hiilidioksidipäästökertoimella. Päästökertoimet perustuvat samoihin
+päästöarvioihin joita Helsingin Seudun Liikenne (HSL) käyttää heidän Reittiopas.fi palvelussaan (lisätietoa: http://www.hsljalki.fi/fi/menu/info). 
+Hiilidioksidipäästöt on laskettu kullekin kulkumuodolle erikseen (auto & joukkoliikenne: bussi, metro, raitiovaunu, juna, lautta), ja joukkoliikenteen osalta hiilidioksidipäästöt on laskentojen
+jälkeen summattu yhteen.
+
+Pääkaupunkiseudun Matka-CO2 Matriisi 2015 on vahvasti yhteydessä Pääkaupunkiseudun-Matka-aikamatriisi 2015 tietoaineistoon, joka on myös Accessibility Research Groupin ylläpitämä ja tuottama.
+
+Aineisto on tuotetty Helsingin yliopiston Geotieteiden ja Maantieteen laitoksen Accessibility Research Groupissa / MetropAccess-hankkeessa (2010-2016), 
+http://www.helsinki.fi/science/accessibility/. Työtä ovat rahoittaneet KatuMetro-tutkimusohjelma sekä Helsingin yliopisto. Laskennat on suoritettu hyödyntäen CSC:n (IT Center for Science)
+laskentaresursseja.
+
+
+Aineiston käyttö on käyttäjän omalla vastuulla. Aineiston tuottaja ei vastaa aineistoissa mahdollisesti esiintyvistä virheistä, epätarkkuuksista tai niiden käyttämisen mahdollisesti
+aiheuttamista vahingoista.
+
+--------------
+DATAN RAKENNE
+--------------
+
+Aineisto on jaettu 13 231 tekstitiedostoon kunkin reitin kohdepisteen mukaan. Yksi tiedosto sisältää matka- ja matka-aikatietoja kahdelta eri vuorokauden ajalta (ruuhka-aika ja keskipäivä) eri kulkumuodoilla (kävely, joukkoliikenne, autoilu) kustakin YKR-ruudusta 
+tiedoston nimen mukaiseen YKR-ruutuun. Kussakin tiedostossa on täten aina 13231 riviä.
+
+Tiedostoissa on 14 ominaisuustietokenttää: 1) from_id, 2) to_id, 3) pt_r_co2, 4) pt_r_dd, 5) pt_r_l, 6) pt_m_co2, 7) pt_m_dd, 8) pt_m_l, 
+9) car_r_co2, 10) car_r_dd, 11) car_r_fc, 12) car_m_co2, 13) car_m_dd, 14) car_m_fc 
+
+Kenttien nimissä esiintyvät lyhenteet:
+______________________________________________________________________________
+pt   | public transport = julkinen liikenne 
+car  | auto
+r    | rush hour = ruuhka-aika
+m    | midday = keskipäivä
+co2  | hiilidioksidipäästöt (grammaa)
+dd   | driven distance = kulkuneuvolla ajettu etäisyys yhteensä metreissä
+l    | lines = reitillä käytettyjen joukkoliikennelinjojen lkm
+fc   | fuel consumption = henkilöauton arvioitu polttoaineenkulutus reitillä
+-----------------------------------------------------------------------------
+
+Kenttien tietosisältö on kuvattu alla:
+
+____________________________________________________________________________________________________________________________
+from_id   |  Reitin lähtöpisteenä olleen YKR-ruudun ID-tunnus
+to_id  	  |  Reitin kohdepisteenä olleen YKR-ruudun ID-tunnus
+pt_r_co2  |  Reitin hiilidioksidipäästöt (grammaa/matkustaja) joukkoliikenteellä ruuhka-aikaan
+pt_r_dd   |  Reitin kulkuneuvolla ajettu etäisyys (metriä) joukkoliikenteellä ruuhka-aikaan
+pt_r_l 	  |  Reitillä käytettyjen joukkoliikennelinjojen lukumäärä ruuhka-aikaan
+pt_m_co2  |  Reitin hiilidioksidipäästöt (grammaa/matkustaja) joukkoliikenteellä keskipäivällä
+pt_m_dd   |  Reitin kulkuneuvolla ajettu etäisyys (metriä) joukkoliikenteellä keskipäivällä
+pt_m_l    |  Reitillä käytettyjen joukkoliikennelinjojen lukumäärä keskipäivällä
+car_r_co2 |  Reitin hiilidioksidipäästöt (grammaa/kulkuneuvo) autolla ruuhka-aikaan
+car_r_dd  |  Reitin henkilöautolla ajettu etäisyys (metriä) ruuhka-aikaan
+car_r_fc  |  Reitin arvioitu polttoaineenkulutus henkilöautolla ruuhka-aikaan
+car_m_co2 |  Reitin hiilidioksidipäästöt (grammaa/kulkuneuvo) autolla keskipäivällä
+car_m_dd  |  Reitin henkilöautolla ajettu etäisyys (metriä) keskipäivällä
+car_m_fc  |  Reitin arvioitu polttoaineenkulutus henkilöautolla keskipäivällä
+----------------------------------------------------------------------------------------------------------------------------
+
+NODATA-arvot on kuvattu arvolla -1.
+
+-----------------
+TUOTANTOHISTORIA
+-----------------
+
+JOUKKOLIIKENNEREITITYS on tehty MetropAccess-Reititin työkalulla, joka huomioi kokonaismatkaketjut joukkoliikenteellä lähtöpisteestä kohteeseen: 
+(1) etäisyys seuraavalle pysäkille 
+  (*) mahdollinen kulkuneuvon vaihto
+(2) etäisyys seuraavalle pysäkille (toistaen kunnes kokonaispituus viimeiselle pysäkille on laskettu)
+
+
+Matka-CO2 Matriisi 2015:n julkisen liikenteen reititykset perustuvat maanantain 28.9.2015 aikataulutietoihin. Reititys toistettiin kahdelle eri vuorokauden ajalle: 
+ 1) keskipäivällä (haarukointi klo 12-13 kymmenellä eri lähtöajalla) 
+ 2) ruuhka-aikaan (haarukointi klo 8-9 kymmenellä eri lähtöajalla) 
+
+Lisätietoja haarukoinnista MetropAccess-Reitittimen käyttöohjeesta.
+
+AUTOREITITYS on tehty ArcGIS 10.2 -ohjelmiston OD Cost Matrix -työkalulla. Tieverkkoaineistona on käytetty Liikenneviraston kehittämän Digiroad-aineiston (Digiroad K) 
+pohjalta muokattua MetropAccess-Digiroadia, jossa reittioptimointia on muutettu realistisemmiksi määrittämällä tieluokkakohtaisia risteyshidasteita, joka vaikuttaa 
+reittivalintoihin. Laskennan impedanssina on käytetty tieverkkoaineiston matka-aikakoja ruuhka-aikaan ja keskipäivällä.
+
+Laskennoissa on huomioitu ainoastaan kulkuneuvolla ajetut matkat: 
+1) matka-aika autolla lähtöpisteestä kohdepisteeseen, 
+2) keskimääräinen pysäköintipaikan etsimiseen kuluva aika 
+
+Kaikki laskennat on tehty hyödyntäen CSC:n laskentaresursseja (https://www.csc.fi/home).
+
+-----------------------------
+HIILIDIOKSIDIPÄÄSTÖLASKENNAT
+-----------------------------
+
+
+Joukkoliikenteen matkojen hiilidioksidipäästöt perustuvat kulkuneuvoilla ajettujen matkojen pituuksiin, jotka on kerrottu kunkin kulkuneuvon hiilidioksidipäästökertoimella (kävelyä ei oteta huomioon),
+ja tämän jälkeen päästöt on summattu yhteen. Suurin osa pääkaupunkiseudun joukkoliikennevälineistä eivät tuota hiilidioksidipäästöjä, ja ainoat hiilidioksidipäästöjä tuottavat kulkutavat ovat 
+bussi (73 g/henkilökm) ja lautta (389 g/henkilökm). Bussien keskimääräinen matkustajamäärä pääkaupunkiseudulla on arvioitu olevan 13 matkustajaa per bussi. Lopullinen hiilidioksidipäästö kullekin
+reitille lasketaan kaavalla
+
+  Etäisyys(km) * hiilidioksidipäästökerroin
+
+Henkilöauton matkoissa on huomioitu ainoastaan ajetut matkan osuudet eli etäisyys parkkipaikalta kohdepisteeseen ja parkkipaikanetsinnästä aiheutuva matkanpituus. 
+Auton hiilidioksidipäästökerroin on arvioitu olevan 171 g/km.
+
+-----------------------------------
+POLTTOAINEEN KULUTUKSEN LASKEMINEN
+-----------------------------------
+
+Polttoaineen kulutuksen laskeminen perustuu autolla ajetun matkan pituuteen kullakin reitillä.
+
+
+Polttoaineen kulutukseen vaikuttavat useat eri tekijät:
+
+ - auton ikä ja koko
+ - polttoaine (bensiini / diesel)
+ - vuodenaika (kesä vs talvi)
+ - liikenneolosuhteet (kaupungin keskusta vs hiljainen maantie)
+
+Onkin täysin mahdotonta laskea autolle (saati sitten pääkaupunkiseudun autoille) "tarkkaa" tai keskimääräistä polttoaineen kulutusta, sillä kulutukseen vaikuttaa monet tekijät. Matriisissa ilmoitettu
+polttoaineen kulutus onkin kompromissi useiden tekijöiden suhteen ja hyvin pelkistetty arvio polttoaineen kulutuksesta. Keskimääräiseksi polttoaineen kulutukseksi on arvioitu 7.3 litraa per 100 kilometriä,
+joka on eri ikäisten- (0-5 v., 6-10 v., 10+ v.), kokoisten- (pieni, keskikok., suuri), ja eri polttoainetta käyttävien (bensiini/diesel) autojen yhteinen keskiarvo. 
+
+Polttoaineen kulutuksen arviot perustuvat samaan HSL:n taulukkoon, johon hiilidioksidipäästölaskennatkin perustuvat (lisätietoa: http://www.hsljalki.fi/fi/menu/info). Bussien ja henkilöautojen polttoaineen
+kulutus arviot perustuvat VTT:n LIPASTO-laskentajärjestelmän tietoihin. 
+
+Arvioitu polttoaineen kulutus per reitti on laskettu seuraavasti (esimerkki ruuhka-ajalta):
+
+  (car_r_dd / 100000.0) * 7.3
+
+Käyttäen yllä olevaa funktiota on helppoa laskea reiteille uudet polttoaineen kulutus arviot käyttäen eri polttoaineen kulutus kerrointa (tässä 7.3 litraa per 100 km).
+
+--------------------------------
+TUOTANTOON OSALLISTUNEET TAHOT
+--------------------------------
+
+Seuraavat henkilöt ovat osallistuneet aineiston tuotantoon (aakkojärjestyksessä)
+
+- Vuokko Heikinheimo, reititysten toteuttaminen ja dokumentointi
+- Timo Jaakkola, matka-aikamallin kehittäminen yksityisautoilun reittitoptimointiin
+- Juha Järvi, BusFaster Ltd, MetropAccess-Reittimen kehittäminen joukkoliikenteen ja kävelyn reittioptimointiin
+- Jaani Lahtinen, Gispositio Oy, hiilipäästölaskurin (RouteCarbonCalculator.jar) kehittäminen
+- Maria Salonen, projektikoordinaattori, kaikki tuotantovaiheet
+- Henrikki Tenkanen, projektikoordinaattori, kaikki tuotantovaiheet 
+- Tuuli Toivonen, hankkeen johtaja, kaikki tuotantovaiheet
+
+Lisäksi Perttu Saarsalmi ja Sakari Jäppinen ovat tehneet arvokasta työtä / antaneet kommentteja työkalujen kehittämiseksi. 
+
+Matriisin vaatiman laskennan taustalla on käytettyä kolmea keskeistä aineistoa: 
+- Digiroad - kansallinen tietietokanta (Copyright Liikennevirasto/Digiroad 2015) (pohja yksityisautoilun mallinnukselle)
+- HSL:n Journey Planner Kalkati.net XML  (pohja joukkoliikenteen mallinnukselle)
+- Open Street Map (pohja kävelyn mallinnukselle) 
+
+-----------------
+VIITTAUSKÄYTÄNNÖT
+-----------------
+
+Jos käytät Pääkaupunkiseudun Matka-CO2 Matriisi 2015 tai tarjoamiamme työkaluja, toivomme, että viittaat laskennan pohjalla olevaan työhön hyvän julkaisutavan mukaisesti.
+
+Voit viitata työhömme näin seuraavasti.
+
+Datan/menetelmien kuvaus:
+Toivonen, T., M. Salonen, H. Tenkanen, P. Saarsalmi, T. Jaakkola & J. Järvi (2014). Joukkoliikenteellä, autolla ja kävellen: Avoin saavutettavuusaineisto pääkaupunkiseudulla. Terra 126: 3, 127-136. 
+
+Datan DOI-tunniste:
+Toivonen, T., H. Tenkanen, V. Heikinheimo, T. Jaakkola, J. Järvi & M. Salonen (2016). Helsinki Region Travel CO2 Matrix 2015. DOI: 10.13140/RG.2.1.2601.0648
+
+
+------------------------------------------------------------
+ESIMERKKEJÄ SAAVUTETTAVUUS-TYÖKALUJEN KÄYTÖSTÄ TUTKIMUSTYÖSSÄ
+------------------------------------------------------------
+
+Saarsalmi, P., H. Tenkanen, O. Järv, M. Salonen & T. Toivonen (under review). Urban food accessibility: Integrating multimodality and temporality using open data. Health & Place (under review).
+
+Laatikainen, T., H. Tenkanen, M. Kyttä & T. Toivonen (2015). Comparing conventional and PPGIS approaches in measuring equality of access to urban aquatic environments. Landscape and Urban Planning 144, 22–33.
+
+Toivonen, T., M. Salonen, H. Tenkanen, P. Saarsalmi, T. Jaakkola & J. Järvi (2014). Joukkoliikenteellä, autolla ja kävellen: Avoin saavutettavuusaineisto pääkaupunkiseudulla. Terra 126: 3, 127-136. 
+
+Salonen, M. & Toivonen, T. (2013). Modelling travel time in urban networks: comparable measures for private car and public transport. Journal of Transport Geography 31, 143–153.
+
+Jaakkola, T. (2013). Paikkatietopohjainen menetelmä autoilun ajoaikojen ja kokonaismatka-aikojen mallintamiseen – esimerkkinä pääkaupunkiseutu. Pro gradu -tutkielma. Helsingin yliopisto. 
+Geotieteiden ja maantieteen laitos.
+
+Lahtinen, J., Salonen, M. & Toivonen, T. (2013). Facility allocation strategies and the sustainability of service delivery: Modelling library patronage patterns and their related CO2-emissions. Applied Geography 44, 43-52.
+
+Salonen, M., Toivonen, T. & Vaattovaara, M. (2012). Arkiliikkumisen vaihtoehdoista monikeskuksistuvassa metropolissa: Kaksi näkökulmaa palvelujen saavutettavuuteen pääkaupunkiseudulla.
+Yhdyskuntasuunnittelu 3/2012
+
+Jäppinen,  S., Toivonen, T. & Salonen, M. (2013). Modelling the potential effect of shared bicycles on public transport travel times in Greater Helsinki: An open data approach. Applied Geography 43, 13-24.
+
+
+---------
+LISENSSI 
+---------
+
+Pääkaupunkiseudun Matka-CO2 Matriisi 2015, jonka tekijä on Accessibility Research Group / MetropAccess-hanke (Helsingin Yliopisto) on lisensoitu Creative Commons Nimeä 4.0 Kansainvälinen -lisenssillä.
+Lisätietoa lisenssistä: http://creativecommons.org/licenses/by/4.0/deed.fi
+
+Mikäli aineiston pohjalta laaditaan tieteellisiä julkaisuja, toivomme, että tekijät olisivat yhteydessä hankkeen johtajaan.
