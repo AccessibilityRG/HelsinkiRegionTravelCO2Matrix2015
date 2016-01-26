@@ -141,7 +141,6 @@ Joukkoliikenteellä, autolla ja kävellen: Avoin saavutettavuusaineisto pääkau
 DOI name for the dataset:
 Toivonen, T., H. Tenkanen, V. Heikinheimo, T. Jaakkola, J. Järvi & M. Salonen (2016). Helsinki Region Travel CO2 Matrix 2015. DOI: 10.13140/RG.2.1.2601.0648 
 
-
 ## <a name="codes"></a>Codes
 
 All the codes and analysis steps that have been used to produce the Helsinki Region Travel CO2 Matrix 2015 are documented separately in [here](codes/README.md). 
@@ -154,6 +153,7 @@ Following people have contributed / are responsible for creating this dataset:
 
  - [Henrikki Tenkanen](http://blogs.helsinki.fi/accessibility/people_and_contact/) (PhD candidate, contact person regarding the dataset, in charge of the analyses / calculations)
  - Vuokko Heikinheimo (PhD candidate, accessibility calculations, documentation)
+ - Jaani Lahtinen (PhD candidate / private consultant (Gispositio Oy), programming and design of CO2 calculator (RouteCarbonCalculator.jar)
  - Tuuli Toivonen (PI, leader of the research group)
  
 In addition, we thank [CSC - IT Center for Science](https://www.csc.fi/) for computational resources and help. 
