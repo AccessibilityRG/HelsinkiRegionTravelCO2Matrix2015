@@ -147,7 +147,7 @@ __DOI name for the dataset:__
 
 ## <a name="codes"></a>Codes
 
-All the codes and analysis steps that have been used to produce the Helsinki Region Travel CO2 Matrix 2015 are documented separately in [here](codes/README.md). 
+All the codes and analysis steps that have been used to produce the Helsinki Region Travel CO2 Matrix 2015 are documented separately in [here](codes/). 
 
 ## <a name="contact"></a>Contribution / Contact
 Helsinki Region Travel CO2 Matrix 2015 was created by the [Accessibility Research Group](http://www.helsinki.fi/science/accessibility) 
