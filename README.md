@@ -43,16 +43,16 @@ Modelling library patronage patterns and their related CO2-emissions](http://www
 | --------- | ---------- | 
 | __from_id__   | ID number of the origin grid cell |
 | __to_id__     | ID number of the destination grid cell |
-| __pt_r_co2__  | CO2 emissions (grams) of the route by public transportation in rush hour traffic | 
+| __pt_r_co2__  | CO2 emissions (grams/passenger) of the route by public transportation in rush hour traffic | 
 | __pt_r_dd__   | Distance (meters) of the route travelled by any public transportation vehicle in rush hour traffic | 
 | __pt_r_l__    | Number of lines used on the route by public transportation in rush hour traffic |
-| __pt_m_co2__  | CO2 emissions (grams) of the route by public transportation in midday traffic |
+| __pt_m_co2__  | CO2 emissions (grams/passenger) of the route by public transportation in midday traffic |
 | __pt_m_dd__   | Distance (meters) of the route travelled by any public transportation vehicle in midday traffic | 
 | __pt_r_l__    | Number of lines used on the route by public transportation in midday traffic |
-| __car_r_co2__ | CO2 emissions (grams) of the route by private car in rush hour traffic |
+| __car_r_co2__ | CO2 emissions (grams/vehicle) of the route by private car in rush hour traffic |
 | __car_r_dd__  | Distance (meters) driven by car during in rush hour traffic |
 | __car_r_fc__  | Estimated fuel consumption (liters) by car during in rush hour traffic |
-| __car_r_co2__ | CO2 emissions (grams) of the route by private car in midday traffic |
+| __car_r_co2__ | CO2 emissions (grams/vehicle) of the route by private car in midday traffic |
 | __car_r_dd__  | Distance (meters) driven by car in midday traffic |
 | __car_r_fc__  | Estimated fuel consumption (liters) by car in midday traffic |
 
@@ -66,7 +66,7 @@ Travel distances for each route are calculated using specific accessibility GIS 
 
 In the CO2 calculations, the travel distances by public transportation includes all trip legs that are done with any vehicle (i.e. bus, train, metro, tram, ferry), thus walking is excluded. 
 CO2 values for each trip leg and for each transport mode are calculated separately and then summed together. As Helsinki Region Public Transport is mainly CO2 free, __the only transport modes
-that actually causes CO2 emissions are bus (73 g/km) and ferry (389 g/km)__. Final CO2 emission for public transport and car are calculated separately with function:
+that actually causes CO2 emissions are bus (73 g/km) and ferry (389 g/km)__. The number of passengers on buses is estimated to be on average 13 passengers per bus. Final CO2 emission for public transport and car are calculated separately with function:
     
     Distance(km) * carbonEmissionFactor
  

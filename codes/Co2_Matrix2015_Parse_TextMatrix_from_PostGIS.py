@@ -231,8 +231,8 @@ if __name__ == '__main__':
     # --------------------------------------------------------
     # Run the processes in parallel using multiprocessing.Pool
     # --------------------------------------------------------
-    objList = [o1, o2, o3]
-    #objList = [o4, o5, o6]
+    #objList = [o1, o2, o3]
+    objList = [o4, o5, o6]
 
     print("%s parallel processes created." % len(objList))
 
