@@ -60,7 +60,28 @@ Modelling library patronage patterns and their related CO2-emissions](http://www
 ## <a name="calculations"></a>How calculations were done?
 
 CO2 and fuel consumption calculations are based on travel distances by different transport modes that are multiplied by [carbon emission factors or fuel consumption estimates](http://www.hsljalki.fi/en/menu/info). 
-Travel distances for each route are calculated using specific accessibility GIS tools called __[MetropAccess-Reititin](http://blogs.helsinki.fi/accessibility/reititin/)__ and __[MetropAccess-Digiroad](http://blogs.helsinki.fi/accessibility/digiroad-tool/)__ that are developed and maintained by Accessibility Research Group, Uni. Helsinki. 
+Travel distances for each route are calculated using specific accessibility GIS tools called __[MetropAccess-Reititin](http://blogs.helsinki.fi/accessibility/reititin/)__ and __[MetropAccess-Digiroad](http://blogs.helsinki.fi/accessibility/digiroad-tool/)__ that are developed and maintained by Accessibility Research Group, Uni. Helsinki.
+ 
+The routes by CAR have been calculated in ArcGIS 10.2 software by using the OD Cost Matrix tool in the Network Analyst toolkit. MetropAccess-Digiroad (modified from the original Digiroad data
+provided by Finnish Transport Agency) has been used as Network Dataset in which the route selection/optimization are made more realistic by adding crossroad impedances for different road classes. 
+The calculations have been repeated for two times of the day using 1) the "midday impedance" (i.e. travel times outside rush hour) and 2) the "rush hour impendance" as impedance in the calculations.
+
+All trip legs where car is used are taken into account in the calculations: 
+ 1. travel distance from parking lot to destination 
+ 2. average travel distance for searching a parking lot 
+
+The routes by PUBLIC TRANSPORATION have been calculated by using the MetropAccess-Reititin tool which also takes into account the whole travel chains from the origin to the destination. 
+In CO2 calculations only trip legs that the passenger travels with any vehicle are taken into account:
+ 1. travel distance to next transit stop, 
+     1. possible transport mode change, 
+ 2. travel distance to next transit stop
+
+Travel distance calculations by public transportation have been optimized by using 10 different departure times within the calculation hour using so called Golomb ruler. 
+The fastest route from these calculations are selected for the final travel CO2 matrix.
+
+Calculations of Helsinki Region Travel CO2 Matrix 2015 are based on schedules of Monday 28.09.2015:
+1) Midday (optimized between 12:00-13:00 ) 
+2) Rush hour (optimized between 08:00-09:00)
 
 ### CO2 calculations
 
