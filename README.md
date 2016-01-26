@@ -28,7 +28,7 @@ The CO2 emissions are calculated based on the distance that is travelled with di
 Carbon emission factors are based on the same estimates that Helsinki Region Transport (HRT) uses in their [Journey Planner service](http://www.reittiopas.fi/en/), more info [here](http://www.hsljalki.fi/en/menu/info).
 Public transportation emissions are a sum of emissions based on bus, tram, metro, ferry and train.
    
-Dataset is openly available for everyone for free and it can be downloaded from the [Accessibility Research Group website](http://www.helsinki.fi/science/accessibility/data) (under a Creative Commons 4.0 Licence).
+Dataset is openly available for everyone for free and __you can download it from the [Accessibility Research Group website](http://www.helsinki.fi/science/accessibility/data)__ (under a Creative Commons 4.0 Licence).
 
 Helsinki Region Travel CO2 Matrix 2015 is closely related to __[Helsinki Region Travel Time Matrix 2015](http://blogs.helsinki.fi/saavutettavuus/paakaupunkiseudun-matka-aikamatriisi-2015/)__ 
 that is also produced by Accessibility Research Group. 
