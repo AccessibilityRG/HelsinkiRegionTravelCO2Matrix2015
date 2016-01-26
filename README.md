@@ -135,10 +135,12 @@ If you use Helsinki Region Travel CO2 Matrix 2015 dataset or related tools in yo
 You can cite to our work as follows:
 
 Data/Tools description:
+
 Toivonen, T., M. Salonen, H. Tenkanen, P. Saarsalmi, T. Jaakkola & J. Järvi (2014). 
 Joukkoliikenteellä, autolla ja kävellen: Avoin saavutettavuusaineisto pääkaupunkiseudulla. Terra 126: 3, 127-136. 
 
 DOI name for the dataset:
+
 Toivonen, T., H. Tenkanen, V. Heikinheimo, T. Jaakkola, J. Järvi & M. Salonen (2016). Helsinki Region Travel CO2 Matrix 2015. DOI: 10.13140/RG.2.1.2601.0648 
 
 ## <a name="codes"></a>Codes
