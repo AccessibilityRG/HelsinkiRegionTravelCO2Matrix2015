@@ -79,7 +79,7 @@ In CO2 calculations only trip legs that the passenger travels with any vehicle a
 Travel distance calculations by public transportation have been optimized by using 10 different departure times within the calculation hour using so called Golomb ruler. 
 The fastest route from these calculations are selected for the final travel CO2 matrix.
 
-Calculations of Helsinki Region Travel CO2 Matrix 2015 are based on schedules of Monday 28.09.2015:
+Calculations of Helsinki Region Travel CO2 Matrix 2015 are based on schedules of Monday 28.09.2015 at:
  1. Midday (optimized between 12:00-13:00 ) 
  2. Rush hour (optimized between 08:00-09:00)
 
