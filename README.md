@@ -66,7 +66,7 @@ Modelling library patronage patterns and their related CO2-emissions](http://www
 CO2 and fuel consumption calculations are based on travel distances by different transport modes that are multiplied by [carbon emission factors or fuel consumption estimates](http://www.hsljalki.fi/en/menu/info). 
 Travel distances for each route are calculated using specific accessibility GIS tools called __[MetropAccess-Reititin](http://blogs.helsinki.fi/accessibility/reititin/)__ and __[MetropAccess-Digiroad](http://blogs.helsinki.fi/accessibility/digiroad-tool/)__ that are developed and maintained by Accessibility Research Group, Uni. Helsinki.
  
-The routes by __car__ have been calculated in ArcGIS 10.2 software by using the OD Cost Matrix tool in the Network Analyst toolkit. MetropAccess-Digiroad (modified from the original Digiroad data
+The routes by __car__ have been calculated in ArcGIS 10.2 software by using the OD Cost Matrix tool in the Network Analyst toolkit. [MetropAccess-Digiroad](http://blogs.helsinki.fi/accessibility/data/metropaccess-digiroad/) (modified from the original Digiroad data
 provided by Finnish Transport Agency) has been used as Network Dataset in which the route selection/optimization are made more realistic by adding crossroad impedances for different road classes. 
 The calculations have been repeated for two times of the day using 1) the "midday impedance" (i.e. travel times outside rush hour) and 2) the "rush hour impendance" as impedance in the calculations.
 
