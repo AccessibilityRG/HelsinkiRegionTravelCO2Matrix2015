@@ -15,6 +15,8 @@ __Contents:__
 - [Codes](#codes)
 - [Contribution / Contact](#contact)
 
+(P.S. You can read Finnish description from [Metadata](metadata/METADATA_Helsinki-Region-Travel-CO2-Matrix-2015.txt).)
+
 ## <a name="what-is"></a>What is Helsinki Region Travel CO2 Matrix 2015?
  
 [__Helsinki Region Travel CO2 Matrix 2015__](http://www.helsinki.fi/science/accessibility/data) is a dataset that contains CO2 emissions (+some additional attributes) produced by public transportation (PT) and private car
