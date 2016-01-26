@@ -8,6 +8,8 @@ __Contents:__
 - [What is Helsinki Region Travel CO2 Matrix 2015?](#what-is)
 - [Attributes of Helsinki Region Travel CO2 Matrix 2015](#attributes)
 - [How calculations were done?](#calculations)
+   - [CO2 calculations](#co2-calculations)
+   - [Fuel consumption calculations](#fc-calculations)
 - [Licence](#license)
 - [How to cite this work?](#how-to-cite)
 - [Codes](#codes)
@@ -80,10 +82,10 @@ Travel distance calculations by public transportation have been optimized by usi
 The fastest route from these calculations are selected for the final travel CO2 matrix.
 
 Calculations of Helsinki Region Travel CO2 Matrix 2015 are based on schedules of Monday 28.09.2015 at:
- 1. Midday (optimized between 12:00-13:00 ) 
+ 1. Midday (optimized between 12:00-13:00) 
  2. Rush hour (optimized between 08:00-09:00)
 
-### CO2 calculations
+### <a name="co2-calculations">CO2 calculations
 
 In the CO2 calculations, the travel distances by public transportation includes all trip legs that are done with any vehicle (i.e. bus, train, metro, tram, ferry), thus walking is excluded. 
 CO2 values for each trip leg and for each transport mode are calculated separately and then summed together. As Helsinki Region Public Transport is mainly CO2 free, __the only transport modes
@@ -95,7 +97,7 @@ Travel distances by private car takes into account the actual driving distance b
 and the distance that it approximately takes to find a parking place at the destination. __Carbon emission factor for private car is 171 g/km__.   
 More information about the car distance calculations can be found from [here](http://blogs.helsinki.fi/accessibility/digiroad-tool/). 
 
-### Fuel consumption calculations
+### <a name="fc-calculations">Fuel consumption calculations
 Fuel consumption calculations (for private car) are also based on driving distance between origin and 
 destination locations plus additional distance that it takes to find a parking place (i.e. a single route). 
 
