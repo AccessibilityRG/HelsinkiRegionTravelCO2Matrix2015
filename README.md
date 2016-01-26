@@ -74,7 +74,7 @@ The routes by PUBLIC TRANSPORATION have been calculated by using the MetropAcces
 In CO2 calculations only trip legs that the passenger travels with any vehicle are taken into account:
  1. travel distance to next transit stop, 
      1. possible transport mode change, 
- 2. travel distance to next transit stop
+ 2. travel distance to next transit stop (continuing until the last stop is reached)
 
 Travel distance calculations by public transportation have been optimized by using 10 different departure times within the calculation hour using so called Golomb ruler. 
 The fastest route from these calculations are selected for the final travel CO2 matrix.
