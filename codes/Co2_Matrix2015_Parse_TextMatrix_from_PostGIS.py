@@ -122,7 +122,6 @@ if __name__ == '__main__':
     # -------------
 
     ykr_fp = r"C:\HY-Data\HENTENKA\Python\MassaAjoNiputus\ShapeFileet\MetropAccess_YKR_grid\MetropAccess_YKR_grid_EurefFIN.shp"
-    #ykr_fp = r"C:\HY-Data\HENTENKA\Opetus\2015_GIS_Prosessiautomatisointi\MetropAccess_YKR_grid\MetropAccess_YKR_grid_EurefFIN.shp"
     outDir = r"E:\Matriisiajot2015\RESULTS\HelsinkiRegion_TravelCO2Matrix2015"
 
     # Initialize matrix methods
@@ -139,15 +138,15 @@ if __name__ == '__main__':
     dtype = 'REAL'
 
     col_name = 'car_r_fc'
-    #fl.addColumnToTable(table=DATA_TABLE, column_name=col_name, data_type=dtype)
+    fl.addColumnToTable(table=DATA_TABLE, column_name=col_name, data_type=dtype)
 
     col_name = 'car_m_fc'
-    #fl.addColumnToTable(table=DATA_TABLE, column_name=col_name, data_type=dtype)
+    fl.addColumnToTable(table=DATA_TABLE, column_name=col_name, data_type=dtype)
 
     # Create Primary key
-    #fl.createPrimaryKey(col_name='Id')
+    fl.createPrimaryKey(col_name='Id')
     # Set Primary key
-    #fl.setPrimaryKeyCol(table=DATA_TABLE, key_column='Id')
+    fl.setPrimaryKeyCol(table=DATA_TABLE, key_column='Id')
 
     # Calculate the Fuel consumption
     # -------------------------------
@@ -158,24 +157,23 @@ if __name__ == '__main__':
     sizes = ['S', 'M', 'L']
     formula = 'mean'
     fuels = ['p', 'd']
-    #PD = funclib.fuelConsumption(fuels=fuels, ages=ages, sizes=sizes, formula=formula)
+    PD = funclib.fuelConsumption(fuels=fuels, ages=ages, sizes=sizes, formula=formula)
 
     # Get the result
-    #fuel_consumption = np.round(PD.result, 1)  # ==> 7.3 l per 100 km
+    fuel_consumption = np.round(PD.result, 1)  # ==> 7.3 l per 100 km
 
     # Calculate the fuel consumption into DB
     input_col = 'car_r_dd'
     target_col = 'car_r_fc'
-    #fl.calculateFuelConsumptionDB(input_col=input_col, target_col=target_col, fuel_consumption_factor=fuel_consumption)
+    fl.calculateFuelConsumptionDB(input_col=input_col, target_col=target_col, fuel_consumption_factor=fuel_consumption)
 
     input_col = 'car_m_dd'
     target_col = 'car_m_fc'
-    #fl.calculateFuelConsumptionDB(input_col=input_col, target_col=target_col, fuel_consumption_factor=fuel_consumption)
+    fl.calculateFuelConsumptionDB(input_col=input_col, target_col=target_col, fuel_consumption_factor=fuel_consumption)
 
 
     # Create PostGIS Indices for 'to_id' and 'from_id' to enable fast lookups
-    #fl.createMatrixIndexes()
-
+    fl.createMatrixIndexes()
 
     # ==============================================================
     # Create process objects ==> Enable multiprocessing in parallel
@@ -231,8 +229,7 @@ if __name__ == '__main__':
     # --------------------------------------------------------
     # Run the processes in parallel using multiprocessing.Pool
     # --------------------------------------------------------
-    #objList = [o1, o2, o3]
-    objList = [o4, o5, o6]
+    objList = [o1, o2, o3, o4, o5, o6]
 
     print("%s parallel processes created." % len(objList))
 
