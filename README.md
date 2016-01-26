@@ -22,7 +22,7 @@ __Contents:__
 [__Helsinki Region Travel CO2 Matrix 2015__](http://www.helsinki.fi/science/accessibility/data) is a dataset that contains CO2 emissions (+some additional attributes) produced by public transportation (PT) and private car
 for routes between all 250 m x 250 m grid cell centroids (n = 13231) in the Capital Region of Helsinki ([see this map](http://www.helsinki.fi/science/accessibility/tools/YKR/YKR_Identifier.html)). Calculations were done separately for two different time of the day using 
 rush hour (08:00-09:00) and midday (12:00-13:00) schedules/traffic conditions. The grid cells are compatible with the statistical 
-grid cells in the YKR (yhdyskuntarakenteen seurantajärjestelmä) data set produced by the Finnish Environment Institute (SYKE). 
+grid cells in the YKR (yhdyskuntarakenteen seurantajärjestelmä) dataset produced by the Finnish Environment Institute (SYKE). 
 
 The CO2 emissions are calculated based on the distance that is travelled with different travel modes (private car & PT) on a individual route multiplied with a specific carbon emission factors.
 Carbon emission factors are based on the same estimates that Helsinki Region Transport (HRT) uses in their [Journey Planner service](http://www.reittiopas.fi/en/), more info [here](http://www.hsljalki.fi/en/menu/info).
@@ -68,7 +68,7 @@ Travel distances for each route are calculated using specific accessibility GIS 
  
 The routes by __car__ have been calculated in ArcGIS 10.2 software by using the OD Cost Matrix tool in the Network Analyst toolkit. [MetropAccess-Digiroad](http://blogs.helsinki.fi/accessibility/data/metropaccess-digiroad/) (modified from the original Digiroad data
 provided by Finnish Transport Agency) has been used as Network Dataset in which the route selection/optimization are made more realistic by adding crossroad impedances for different road classes. 
-The calculations have been repeated for two times of the day using 1) the "midday impedance" (i.e. travel times outside rush hour) and 2) the "rush hour impendance" as impedance in the calculations.
+The calculations have been repeated for two different times of the day using 1) the "midday impedance" (i.e. travel times outside rush hour) and 2) the "rush hour impendance" as impedance in the calculations.
 
 All trip legs where car is used are taken into account in the calculations: 
  1. travel distance from parking lot to destination 
@@ -81,7 +81,7 @@ In CO2 calculations only trip legs that the passenger travels with any vehicle a
  2. travel distance to next transit stop (continuing until the last stop is reached)
 
 Travel distance calculations by public transportation have been optimized by using 10 different departure times within the calculation hour using so called Golomb ruler. 
-The fastest route from these calculations are selected for the final travel CO2 matrix.
+The __fastest__ route (notice: not shortest) from these calculations are selected for the final travel CO2 matrix.
 
 Calculations of Helsinki Region Travel CO2 Matrix 2015 are based on schedules of Monday 28.09.2015 at:
  1. Midday (optimized between 12:00-13:00) 
@@ -95,7 +95,7 @@ that actually causes CO2 emissions are bus (73 g/km) and ferry (389 g/km)__. The
     
     Distance(km) * carbonEmissionFactor
  
-Travel distances by private car takes into account the actual driving distance between origin and destination location 
+Travel distances by private car take into account the actual driving distance between origin and destination location 
 and the distance that it approximately takes to find a parking place at the destination. __Carbon emission factor for private car is 171 g/km__.   
 More information about the car distance calculations can be found from [here](http://blogs.helsinki.fi/accessibility/digiroad-tool/). 
 

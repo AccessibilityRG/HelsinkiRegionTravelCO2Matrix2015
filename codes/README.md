@@ -12,7 +12,7 @@ Producing the Helsinki Region Travel CO2 Matrix 2015 included following __analys
  4. Calculating the fuel consumption for car in PostGIS
  5. Parsing the text file product from PostGIS
  
-The analyses and processing phases support multiprocessing using Python [multiprocessing](https://docs.python.org/3.4/library/multiprocessing.html) module 
+The analyses are mainly done in Python programming language and processing phases support multiprocessing using Python [multiprocessing](https://docs.python.org/3.4/library/multiprocessing.html) module 
 that makes possible to do processing in parallel utilizing multiple processors on a given machine. ==> Makes possible to do things faster. 
  
 ## Structure of the code
