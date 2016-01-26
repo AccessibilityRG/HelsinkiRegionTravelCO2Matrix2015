@@ -48,13 +48,13 @@ Modelling library patronage patterns and their related CO2-emissions](http://www
 | __pt_r_l__    | Number of lines used on the route by public transportation in rush hour traffic |
 | __pt_m_co2__  | CO2 emissions (grams/passenger) of the route by public transportation in midday traffic |
 | __pt_m_dd__   | Distance (meters) of the route travelled by any public transportation vehicle in midday traffic | 
-| __pt_r_l__    | Number of lines used on the route by public transportation in midday traffic |
+| __pt_m_l__    | Number of lines used on the route by public transportation in midday traffic |
 | __car_r_co2__ | CO2 emissions (grams/vehicle) of the route by private car in rush hour traffic |
 | __car_r_dd__  | Distance (meters) driven by car during in rush hour traffic |
 | __car_r_fc__  | Estimated fuel consumption (liters) by car during in rush hour traffic |
-| __car_r_co2__ | CO2 emissions (grams/vehicle) of the route by private car in midday traffic |
-| __car_r_dd__  | Distance (meters) driven by car in midday traffic |
-| __car_r_fc__  | Estimated fuel consumption (liters) by car in midday traffic |
+| __car_m_co2__ | CO2 emissions (grams/vehicle) of the route by private car in midday traffic |
+| __car_m_dd__  | Distance (meters) driven by car in midday traffic |
+| __car_m_fc__  | Estimated fuel consumption (liters) by car in midday traffic |
 
  
 ## <a name="calculations"></a>How calculations were done?
