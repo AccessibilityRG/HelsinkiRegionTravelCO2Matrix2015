@@ -153,8 +153,8 @@ class matrixMethods ():
                     flist.append(os.path.join(root, filename))
         return flist
 
-    def createMatrixFolder(self, to_id, outDir):
-        dirname = "%sxxx" % str(to_id)[:4]
+    def createMatrixFolder(self, ykr_id, outDir):
+        dirname = "%sxxx" % str(ykr_id)[:4]
         fullpath = os.path.join(outDir, dirname)
         if not os.path.isdir(fullpath):
             os.makedirs(fullpath)
@@ -173,10 +173,20 @@ class matrixMethods ():
         print("Error: Could not find corresponding target_file for %s in %s" % (Source_ID, search_folder))
         sys.exit()
 
-    def pullDataFromDB(self, to_id):
-        # Get unique 'to_id' values from the db
-        sql = """SELECT * FROM %s
-                  WHERE to_id = %s;""" % (DATA_TABLE, to_id)
+    def pullDataFromDB(self, ykr_id="", direction=""):
+
+        if direction == 'to':
+            # Get unique 'to_id' values from the db
+            sql = """SELECT * FROM %s
+                      WHERE to_id = %s;""" % (DATA_TABLE, ykr_id)
+        elif direction == 'from':
+            # Get unique 'from_id' values from the db
+            sql = """SELECT * FROM %s
+                      WHERE from_id = %s;""" % (DATA_TABLE, ykr_id)
+
+        else:
+            raise Exception("direction can be only 'to' or 'from'")
+
         # Read data into DataFrame
         data = pd.read_sql_query(sql, self.engine)
 

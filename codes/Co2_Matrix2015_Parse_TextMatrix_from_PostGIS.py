@@ -36,7 +36,7 @@ import multiprocessing
 
 class co2TextMatrixCreator ():
 
-    def __init__(self, fl="", threadID="", start_index="", end_index="", ykr_grid_df="", ykr_grid_fp="", output_co2_dir=""):
+    def __init__(self, fl="", threadID="", start_index="", end_index="", ykr_grid_df="", ykr_grid_fp="", output_co2_dir="", direction=""):
         self.fl = fl
         self.threadID = threadID
         self.start_index = start_index
@@ -44,6 +44,7 @@ class co2TextMatrixCreator ():
         self.ykr_grid_df = ykr_grid_df
         self.ykr_grid_fp = ykr_grid_fp
         self.output_co2_dir = output_co2_dir
+        self.direction = direction
 
 
 def createCO2TextMatrix(obj):
@@ -56,32 +57,48 @@ def createCO2TextMatrix(obj):
     start_index = obj.start_index
     end_index = obj.end_index
 
+    # Direction of the matrix: either 'to' or 'from'
+    direction = obj.direction
+
+    if direction == 'to':
+        # Variable indicating the direction of the results
+        dir_id_str = 'to_id'
+        # Variable used in joins and other parts (i.e. opposite direction)
+        join_dir_id_str = 'from_id'
+    elif direction == 'from':
+        # Variable indicating the direction of the results
+        dir_id_str = 'from_id'
+        # Variable used in joins and other parts (i.e. opposite direction)
+        join_dir_id_str = 'to_id'
+    else:
+        raise Exception("direction can be only 'to' or 'from'")
+
     print("Start iterating")
 
     # Iterate over individual YKR_IDs and create
     for index, row in ykr_grid.iterrows():
         if index >= start_index and index < end_index:
-            # Get to_id
-            to_id = row['YKR_ID']
-            print("Index: %s,Processing ID: %s" % (index, to_id))
+            # Get YKR-ID
+            ykr_id = row['YKR_ID']
+            print("Index: %s,Processing ID: %s" % (index, ykr_id))
 
-            # Get unique 'to_id' values from the db
-            data = fl.pullDataFromDB(to_id)
+            # Get unique 'to_id' or 'from_id' values from the db
+            data = fl.pullDataFromDB(ykr_id=ykr_id, direction=direction)
 
             # Join ('outer') with YKR_ID to find out missing values and sort the values
-            data = ykr_grid[['YKR_ID']].merge(data, left_on='YKR_ID', right_on='from_id', how='outer')
+            data = ykr_grid[['YKR_ID']].merge(data, left_on='YKR_ID', right_on=join_dir_id_str, how='outer')
 
             # Drop dublicate values
             data = data.drop_duplicates(subset='YKR_ID')
 
-            # Set 'YKR_ID' value for 'from_id'
-            data['from_id'] = data['YKR_ID']
+            # Set 'YKR_ID' value for 'from_id' or 'to_id' depending on the direction
+            data[join_dir_id_str] = data['YKR_ID']
 
             # Drop rows with NaN in from_id
-            data = data.ix[~data['from_id'].isnull()]
+            data = data.ix[~data[join_dir_id_str].isnull()]
 
             # Ensure that 'to_id' is present in all cases
-            data['to_id'] = to_id
+            data[dir_id_str] = ykr_id
 
             # Fill NaN values with -1
             data = data.fillna(value=-1)
@@ -92,6 +109,7 @@ def createCO2TextMatrix(obj):
                         'pt_m_co2', 'pt_m_dd', 'pt_m_l',
                         'car_r_co2', 'car_r_dd', 'car_r_fc',
                         'car_m_co2', 'car_m_dd', 'car_m_fc']
+
             data = data[datacols]
 
             # Set data type to int for other columns than fuel consumption
@@ -106,33 +124,18 @@ def createCO2TextMatrix(obj):
             data = data.replace({'-1.0': '-1'})
 
             # Create folder if does not exist
-            targetDir = fl.createMatrixFolder(outDir=output_co2_dir, to_id=to_id)
+            targetDir = fl.createMatrixFolder(outDir=output_co2_dir, ykr_id=ykr_id)
+
             # Create filename
-            outname = "travel_co2_to_%s.txt" % to_id
+            outname = "travel_co2_%s_%s.txt" % (direction, ykr_id)
+
             # Outputpath
             outfile = os.path.join(targetDir, outname)
             #print("Saving results to: %s\n" % outfile)
             # Write results to disk
             data.to_csv(outfile, sep=';', index=False, mode='w', float_format="%.0f")
 
-if __name__ == '__main__':
-
-    # -------------
-    # File paths
-    # -------------
-
-    ykr_fp = r"C:\HY-Data\HENTENKA\Python\MassaAjoNiputus\ShapeFileet\MetropAccess_YKR_grid\MetropAccess_YKR_grid_EurefFIN.shp"
-    outDir = r"E:\Matriisiajot2015\RESULTS\HelsinkiRegion_TravelCO2Matrix2015"
-
-    # Initialize matrix methods
-    fl = funclib.matrixMethods(matrix_dir=outDir, ykr_grid_fp=ykr_fp)
-
-    # =========================================================
-    # Do PostGIS stuff first
-    # =========================================================
-
-    # Connect to DB
-    fl.connect_to_DB()
+def prepareMatrixTable(funclib):
 
     # Add columns for fuel consumption
     dtype = 'REAL'
@@ -171,9 +174,38 @@ if __name__ == '__main__':
     target_col = 'car_m_fc'
     fl.calculateFuelConsumptionDB(input_col=input_col, target_col=target_col, fuel_consumption_factor=fuel_consumption)
 
-
     # Create PostGIS Indices for 'to_id' and 'from_id' to enable fast lookups
     fl.createMatrixIndexes()
+
+if __name__ == '__main__':
+
+    # --------------------------
+    # File paths and Parameters
+    # --------------------------
+
+    ykr_fp = r"C:\HY-Data\HENTENKA\Python\MassaAjoNiputus\ShapeFileet\MetropAccess_YKR_grid\MetropAccess_YKR_grid_EurefFIN.shp"
+    outDir = r"E:\Matriisiajot2015\RESULTS\HelsinkiRegion_TravelCO2Matrix2015_Matrix"
+
+    # Initialize matrix methods
+    fl = funclib.matrixMethods(matrix_dir=outDir, ykr_grid_fp=ykr_fp)
+
+    # Flag for creating columns and indices to table and calculating fuel consumption
+    # ==> Set True if you want to do those processes
+    process_table = False
+
+    # Direction of the results: either 'to' or 'from'
+    direction = 'to'  # 'from'
+
+    # =========================================================
+    # Do PostGIS stuff first
+    # =========================================================
+
+    # Connect to DB
+    fl.connect_to_DB()
+
+    # Try to create columns, indices etc. if the user wants to ==> Notice: if columns, indices exists alread in the table you get an error
+    if process_table:
+        prepareMatrixTable(funclib=fl)
 
     # ==============================================================
     # Create process objects ==> Enable multiprocessing in parallel
@@ -189,35 +221,35 @@ if __name__ == '__main__':
     # Set up start-end indices
     start_idx = 0
     end_idx = 2205
-    o1 = co2TextMatrixCreator(fl=fl, threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_fp=ykr_fp, output_co2_dir=outDir)
+    o1 = co2TextMatrixCreator(fl=fl, threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_fp=ykr_fp, output_co2_dir=outDir, direction=direction)
 
     # Process2
     # =======
     # Set up start-end indices
     start_idx = 2205
     end_idx = 4410
-    o2 = co2TextMatrixCreator(fl=fl, threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_fp=ykr_fp, output_co2_dir=outDir)
+    o2 = co2TextMatrixCreator(fl=fl, threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_fp=ykr_fp, output_co2_dir=outDir, direction=direction)
 
     # Process3
     # =======
     # Set up start-end indices
     start_idx = 4410
     end_idx = 6615
-    o3 = co2TextMatrixCreator(fl=fl, threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_fp=ykr_fp, output_co2_dir=outDir)
+    o3 = co2TextMatrixCreator(fl=fl, threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_fp=ykr_fp, output_co2_dir=outDir, direction=direction)
 
     # Process4
     # =======
     # Set up start-end indices
     start_idx = 6615
     end_idx = 8820
-    o4 = co2TextMatrixCreator(fl=fl, threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_fp=ykr_fp, output_co2_dir=outDir)
+    o4 = co2TextMatrixCreator(fl=fl, threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_fp=ykr_fp, output_co2_dir=outDir, direction=direction)
 
     # Process5
     # =======
     # Set up start-end indices
     start_idx = 8820
     end_idx = 11025
-    o5 = co2TextMatrixCreator(fl=fl, threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_fp=ykr_fp, output_co2_dir=outDir)
+    o5 = co2TextMatrixCreator(fl=fl, threadID="%s_%s" % (start_idx, end_idx), start_index=start_idx, end_index=end_idx, ykr_grid_fp=ykr_fp, output_co2_dir=outDir, direction=direction)
 
     # Process6
     # =======
