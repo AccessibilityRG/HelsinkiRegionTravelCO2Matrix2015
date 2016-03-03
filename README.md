@@ -99,6 +99,9 @@ Travel distances by private car take into account the actual driving distance be
 and the distance that it approximately takes to find a parking place at the destination. __Carbon emission factor for private car is 171 g/km__.   
 More information about the car distance calculations can be found from [here](http://blogs.helsinki.fi/accessibility/digiroad-tool/). 
 
+The CO2 emission estimates were retrieved from [Helsinki Region Transport](http://www.hsljalki.fi/en/menu/info) that are based on [LIPASTO](http://lipasto.vtt.fi/en/index.htm) 
+calculation system of the Technical Research Centre of Finland (VTT).
+
 ### <a name="fc-calculations">Fuel consumption calculations
 Fuel consumption calculations (for private car) are also based on driving distance between origin and 
 destination locations plus additional distance that it takes to find a parking place (i.e. a single route). 
